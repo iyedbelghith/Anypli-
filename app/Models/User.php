@@ -3,6 +3,7 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Enums\UserRole;
 use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -21,7 +22,7 @@ class User extends Authenticatable
         'email',
         'password',
         'telephone',
-        'role',
+        'role' => UserRole::class,
     ];
 
 
@@ -35,7 +36,7 @@ class User extends Authenticatable
         return $this->hasOne(Client::class);
     }
     public function projects (){
-        return $this->belongsToMany(Project::class , ' project_user')
+        return $this->belongsToMany(Project::class , 'project_user')
 
         ->withTimestamps();
     }

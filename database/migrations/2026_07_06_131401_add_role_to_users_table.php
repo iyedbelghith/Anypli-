@@ -14,7 +14,10 @@ return new class extends Migration
         Schema::table('users', function (Blueprint $table) {
             $table->string('prenom')->nullable()->after('name');
             $table->string('telephone')->nullable()->after('email');
-            $table->enum('role', ['admin' , 'employee' , 'client'])->default('client')->after('password');
+            $table->enum('role', array_column(\App\Enums\UserRole::cases(), 'value'))
+                ->default(\App\Enums\UserRole::CLIENT->value)
+                ->after('password');
+            $table->softDeletes();
         });
     }
 
@@ -24,7 +27,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn(['prenom', 'telephone', 'role']);
+            $table->dropColumn(['prenom', 'telephone', 'role' , 'deleted_at']);
         });
     }
 };
