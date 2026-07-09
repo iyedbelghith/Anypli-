@@ -1,22 +1,22 @@
 <?php
 
-namespace App\Http\Controllers\Api\User;
+namespace app\Http\Controllers\Api\User;
 
+use App\Helpers\ApiResponse;
 use App\Http\Controllers\Controller;
 use App\Repositories\UserRepository;
 use http\Client\Curl\User;
-use Illuminate\Http\Request;
 
 class DeleteUserController extends Controller
 {
     public function __construct (
-        UserRepository $userRepository
+        private UserRepository $userRepository
     ){}
     public function __invoke(User $user)
     {
         $this ->userRepository->delete($user);
-        return response()->json([
-            'message' => 'User deleted successfully'
-        ]);
+        return ApiResponse::deleted(
+            'User deleted successfully'
+        );
     }
 }

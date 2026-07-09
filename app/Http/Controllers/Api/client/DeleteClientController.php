@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Controllers\Api\Client;
+namespace app\Http\Controllers\Api\client;
 
-use App\Http\Controllers\Controller;
+use App\Helpers\ApiResponse;
+use app\Http\Controllers\Controller;
 use App\Repositories\ClientRepository;
-use Illuminate\Http\Request;
 
 class DeleteClientController extends Controller
 {
@@ -14,8 +14,6 @@ class DeleteClientController extends Controller
     public function __invoke(Client $client)
     {
         $this->clientRepository->delete($client);
-        return response()->json([
-            'message' => 'Client deleted successfully',
-        ]);
+        return ApiResponse::deleted('Client supprimé avec succès');
     }
 }

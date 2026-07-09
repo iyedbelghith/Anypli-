@@ -1,10 +1,9 @@
 <?php
-namespace App\Http\Controllers\Api\Project;
-use App\Http\Controllers\Controller;
+namespace app\Http\Controllers\Api\Project;
+use App\Helpers\ApiResponse;
+use app\Http\Controllers\Controller;
+use app\Http\Requests\Projet\StoreProjectRequest;
 use App\Repositories\ProjectRepository;
-use App\Enums\ProjectStatus;
-use Illuminate\Http\Request;
-use Illuminate\Validation\Rule;
 
 class StoreProjectController extends Controller
 {
@@ -12,20 +11,12 @@ class StoreProjectController extends Controller
         private ProjectRepository $projectRepository){}
 
 
-    public function __invoke(Request $request){
-        $data = $request->validate([
-            'client_id' => 'required|integer|exists:clients,id',
-            'titre' => 'required|string|max:255',
-            'description' => 'nullable|string|max:255',
-            'status' => ['sometimes' , Rule::enum(ProjectStatus::class)],
-            'date_debut' => 'nullable|date',
-            'date_fin' => 'nullable|date|after_or_equal:date_debut',
-
-        ]);
+    public function __invoke(StoreProjectRequest $request){
+        $data = $request->validated();
         $project = $this->projectRepository->create($data);
-        return response()->json([
-            'message' => 'Project created successfully',
-            'project' => $project,
-        ],201);
+        return ApiResponse::created(
+            'Project created successfully',
+            $project
+        );
     }
 }

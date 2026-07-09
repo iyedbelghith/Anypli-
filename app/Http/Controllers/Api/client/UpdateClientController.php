@@ -1,30 +1,29 @@
 <?php
 
-namespace App\Http\Controllers\Api\Client;
+namespace app\Http\Controllers\Api\client;
 
-use App\Http\Controllers\Controller;
+use App\Helpers\ApiResponse;
+use app\Http\Controllers\Controller;
+use app\Http\Requests\Client\UpdateClientRequest;
 use App\Models\Client;
 use App\Repositories\ClientRepository;
-use Illuminate\Http\Request;
+
 
 class UpdateClientController extends Controller
 {
     public function __construct(
         private ClientRepository $clientRepository){}
 
-    public function __invoke(Request $request , Client $client)
+    public function __invoke(UpdateClientRequest $request , Client $client)
     {
-        $data = $request -> validate([
-            'user_id' => 'nullable|integer|exists:users,id',
-            'nom_entreprise' => 'required|string|max:255',
-            'adresse' => 'nullable|string|max:255',
-            'secteur_activite' => 'nullable|string|max:255',
-        ]);
-        $client = $client -> update($data);
-        return response()->json([
-            'message' => 'Client updated successfully',
-            'client' => $client
-        ]);
+        $data = $request->validated();
+
+        $client = $this->clientRepository->update($client, $data);
+
+        return ApiResponse::success(
+            'Client updated successfully',
+            $client->fresh()
+        );
 
     }
 }

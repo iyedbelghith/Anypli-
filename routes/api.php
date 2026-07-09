@@ -1,32 +1,29 @@
 <?php
 
 
-use App\Http\Controllers\Api\Affectation\DeleteAffectationController;
-use App\Http\Controllers\Api\Affectation\IndexAffectationController;
-use App\Http\Controllers\Api\Affectation\ShowAffectationController;
-use App\Http\Controllers\Api\Affectation\StoreAffectationController;
-use App\Http\Controllers\Api\Affectation\UpdateAffectationController;
-use App\Http\Controllers\Api\Project\DeleteProjectController;
-use App\Http\Controllers\Api\Project\IndexProjectController;
-use App\Http\Controllers\Api\Project\ShowProjectController;
-use App\Http\Controllers\Api\Project\StoreProjectController;
-use App\Http\Controllers\Api\Project\UpdateProjectController;
-
-
-use App\Http\Controllers\Api\User\DeleteUserController;
-use App\Http\Controllers\Api\User\IndexUserController;
-use App\Http\Controllers\Api\User\ShowUserController;
-use App\Http\Controllers\Api\User\StoreUserController;
-use App\Http\Controllers\Api\User\UpdateUserController;
+use app\Helpers\Http\Controllers\Api\Affectation\DeleteAffectationController;
+use app\Helpers\Http\Controllers\Api\Affectation\IndexAffectationController;
+use app\Helpers\Http\Controllers\Api\Affectation\ShowAffectationController;
+use app\Helpers\Http\Controllers\Api\Affectation\StoreAffectationController;
+use app\Helpers\Http\Controllers\Api\Affectation\UpdateAffectationController;
+use app\Helpers\Http\Controllers\Api\client\IndexClientController;
+use app\Helpers\Http\Controllers\Api\client\ShowClientController;
+use app\Helpers\Http\Controllers\Api\User\DeleteUserController;
+use app\Helpers\Http\Controllers\Api\User\IndexUserController;
+use app\Helpers\Http\Controllers\Api\User\StoreUserController;
+use app\Helpers\Http\Controllers\Api\User\UpdateUserController;
+use app\Http\Controllers\Api\client\DeleteClientController;
+use app\Http\Controllers\Api\client\StoreClientController;
+use app\Http\Controllers\Api\client\UpdateClientController;
+use app\Http\Controllers\Api\Project\DeleteProjectController;
+use app\Http\Controllers\Api\Project\IndexProjectController;
+use app\Http\Controllers\Api\Project\ShowProjectController;
+use app\Http\Controllers\Api\Project\StoreProjectController;
+use app\Http\Controllers\Api\Project\UpdateProjectController;
+use app\Http\Controllers\Api\User\ShowUserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-
-use App\Http\Controllers\Api\Client\IndexClientController;
-use App\Http\Controllers\Api\Client\StoreClientController;
-use App\Http\Controllers\Api\Client\ShowClientController;
-use App\Http\Controllers\Api\Client\UpdateClientController;
-use App\Http\Controllers\Api\Client\DeleteClientController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();

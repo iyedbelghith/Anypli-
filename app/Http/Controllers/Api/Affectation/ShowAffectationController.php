@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers\Api\Affectation;
+namespace app\Http\Controllers\Api\Affectation;
 
+use App\Helpers\ApiResponse;
 use App\Http\Controllers\Controller;
 use App\Models\Affectation;
 use App\Repositories\AffectationRepository;
@@ -14,8 +15,10 @@ class ShowAffectationController extends Controller
 
     public function __invoke(Affectation $affectation)
     {
-        return response()->json([
-            'affectation' => $this->affectationRepository->findById($affectation->id)
-        ]);
+        return ApiResponse::success(
+            'Affectation retrieved successfully',
+            $this->affectationRepository->findById($affectation->id)
+        );
+
     }
 }

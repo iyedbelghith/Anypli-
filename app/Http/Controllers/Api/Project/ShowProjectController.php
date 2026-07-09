@@ -1,7 +1,8 @@
 <?php
-namespace App\Http\Controllers\Api\Project;
+namespace app\Http\Controllers\Api\Project;
 
-use App\Http\Controllers\Controller;
+use App\Helpers\ApiResponse;
+use app\Http\Controllers\Controller;
 use App\Models\Project;
 use App\Repositories\ProjectRepository;
 
@@ -12,8 +13,9 @@ class ShowProjectController extends Controller
     ){}
     public function __invoke(Project $project)
     {
-        return response()->json([
-            'project' => $this-> projectRepository->findById($project->id)
-        ]);
+        return ApiResponse::success(
+            'Project retrieved successfully',
+            $this->projectRepository->findById($project->id)
+        );
     }
 }

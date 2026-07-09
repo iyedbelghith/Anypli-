@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\Api\User;
+namespace app\Http\Controllers\Api\User;
 
-use App\Http\Controllers\Controller;
+use App\Helpers\ApiResponse;
+use app\Http\Controllers\Controller;
 use App\Models\User;
 use App\Repositories\UserRepository;
-use Illuminate\Http\Request;
 
 class ShowUserController extends Controller
 {
@@ -14,8 +14,9 @@ class ShowUserController extends Controller
     ){}
     public function __invoke(User $user)
     {
-        return response()->json([
-            'user' => $this ->userRepository ->findById($user->id)
-        ]);
+        return ApiResponse::success(
+            'User retrieved successfully',
+            $this->userRepository->findById($user->id)
+        );
     }
 }

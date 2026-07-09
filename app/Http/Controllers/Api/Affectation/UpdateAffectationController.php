@@ -1,11 +1,13 @@
 <?php
 
-namespace App\Http\Controllers\Api\Affectation;
+namespace app\Http\Controllers\Api\Affectation;
 
+use App\Helpers\ApiResponse;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Affectation\UpdateAffectationRequest;
 use App\Models\Affectation;
 use App\Repositories\AffectationRepository;
-use Illuminate\Http\Request;
+
 
 class UpdateAffectationController extends Controller
 {
@@ -13,20 +15,16 @@ class UpdateAffectationController extends Controller
         private AffectationRepository $affectationRepository
     ) {}
 
-    public function __invoke(Request $request, Affectation $affectation)
+    public function __invoke(UpdateAffectationRequest $request, Affectation $affectation)
     {
-        $data = $request->validate([
-            'project_id' => 'sometimes|required|exists:projects,id',
-            'user_id' => 'sometimes|required|exists:users,id',
-            'date_affectation' => 'nullable|date',
-            'role_in_project' => 'nullable|string|max:255',
-        ]);
+        $projectId = $request->input('project_id', $affectation->project_id);
+        $data = $request->validated();
 
         $affectation = $this->affectationRepository->update($affectation, $data);
 
-        return response()->json([
-            'message' => 'Affectation modifiée avec succès',
-            'affectation' => $affectation
-        ]);
+        return ApiResponse::success(
+            'Affectation updated successfully',
+            $affectation->fresh()
+        );
     }
 }

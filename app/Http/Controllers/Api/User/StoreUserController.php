@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Http\Controllers\Api\User;
+namespace app\Http\Controllers\Api\User;
 
-use App\Enums\UserRole;
+
+use App\Helpers\ApiResponse;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\User\StoreUserRequest;
 use App\Repositories\UserRepository;
-use Illuminate\Http\Request;
-use Illuminate\Validation\Rule;
+
 
 class StoreUserController extends Controller
 {
@@ -14,22 +15,15 @@ class StoreUserController extends Controller
         private UserRepository $userRepository
     ) {}
 
-    public function __invoke(Request $request)
+    public function __invoke(StoreUserRequest $request)
     {
-        $data = $request->validate([
-            'name' => 'required|string|max:255',
-            'prenom' => 'nullable|string|max:255',
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required|string|min:8',
-            'telephone' => 'nullable|string|max:20',
-            'role' => ['required', Rule::enum(UserRole::class)],
-        ]);
+        $data = $request->validated();
 
         $user = $this->userRepository->create($data);
 
-        return response()->json([
-            'message' => 'Utilisateur créé avec succès',
-            'user' => $user
-        ], 201);
+        return ApiResponse::created(
+            'User created successfully',
+            $user
+        );
     }
 }
