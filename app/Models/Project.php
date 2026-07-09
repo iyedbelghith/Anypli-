@@ -21,12 +21,15 @@ class Project extends Model
         'status' => ProjectStatus::class,
         'date_debut'=>'date',
         'date_fin' => 'date',
-        ];
-    public function client(){
+    ];
+    public function client()
+    {
         return $this->belongsTo(Client::class);
     }
-    public function users(){
+    public function users()
+    {
         return $this->belongsToMany(User::class , 'project_user')
+            ->withPivot('date_affectation', 'role_in_project')
             ->withTimestamps();
     }
     public function meetings()

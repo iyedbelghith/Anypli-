@@ -1,6 +1,11 @@
 <?php
 
 
+use App\Http\Controllers\Api\Affectation\DeleteAffectationController;
+use App\Http\Controllers\Api\Affectation\IndexAffectationController;
+use App\Http\Controllers\Api\Affectation\ShowAffectationController;
+use App\Http\Controllers\Api\Affectation\StoreAffectationController;
+use App\Http\Controllers\Api\Affectation\UpdateAffectationController;
 use App\Http\Controllers\Api\Project\DeleteProjectController;
 use App\Http\Controllers\Api\Project\IndexProjectController;
 use App\Http\Controllers\Api\Project\ShowProjectController;
@@ -37,3 +42,10 @@ Route::post('/projects', StoreProjectController::class);
 Route::get('/projects/{project}', ShowProjectController::class);
 Route::put('/projects/{project}', UpdateProjectController::class);
 Route::delete('/projects/{project}', DeleteProjectController::class);
+
+
+Route::get('/affectations', IndexAffectationController::class);
+Route::post('/affectations', StoreAffectationController::class);
+Route::get('/affectations/{affectation}', ShowAffectationController::class);
+Route::put('/affectations/{affectation}', UpdateAffectationController::class);
+Route::delete('/affectations/{affectation}',  DeleteAffectationController::class);
