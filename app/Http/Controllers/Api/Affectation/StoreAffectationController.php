@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\Api\Affectation;
 
+use App\Helpers\ApiResponse;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Affectation\StoreAffectationRequest;
 use App\Repositories\AffectationRepository;
-use Illuminate\Http\Request;
+
 
 class StoreAffectationController extends Controller
 {
@@ -12,20 +14,15 @@ class StoreAffectationController extends Controller
         private AffectationRepository $affectationRepository
     ) {}
 
-    public function __invoke(Request $request)
+    public function __invoke(StoreAffectationRequest $request)
     {
-        $data = $request->validate([
-            'project_id' => 'required|exists:projects,id',
-            'user_id' => 'required|exists:users,id',
-            'date_affectation' => 'nullable|date',
-            'role_in_project' => 'nullable|string|max:255',
-        ]);
+        $data = $request->validated();
 
         $affectation = $this->affectationRepository->create($data);
 
-        return response()->json([
-            'message' => 'Affectation créée avec succès',
-            'affectation' => $affectation
-        ], 201);
+        return ApiResponse::created(
+            'Affectation created successfully',
+            $affectation
+        );
     }
 }

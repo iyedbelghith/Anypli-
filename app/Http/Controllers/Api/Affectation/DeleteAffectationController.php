@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\Affectation;
 
+use App\Helpers\ApiResponse;
 use App\Http\Controllers\Controller;
 use App\Models\Affectation;
 use App\Repositories\AffectationRepository;
@@ -16,8 +17,8 @@ class DeleteAffectationController extends Controller
     {
         $this->affectationRepository->delete($affectation);
 
-        return response()->json([
-            'message' => 'Affectation supprimée avec succès'
-        ]);
+        return ApiResponse::deleted(
+            'Affectation deleted successfully'
+        );
     }
 }

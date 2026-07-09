@@ -7,9 +7,9 @@ use App\Models\Client;
 
 class ClientRepository
 {
-    public function getAll()
+    public function getAll(int $perPage =10)
     {
-        return Client::with(['user', 'projects'])->get();
+        return Client::with(['user', 'projects'])->paginate($perPage);
     }
 
     public function findById(int $id)

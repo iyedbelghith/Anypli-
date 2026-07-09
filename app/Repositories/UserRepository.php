@@ -5,9 +5,9 @@ use App\Models\User;
 
 class UserRepository
 {
-    public function getAll()
+    public function getAll(int $perPage =10)
     {
-        return User::all();
+        return User::paginate($perPage);
     }
 
     public function findById(int $id): User

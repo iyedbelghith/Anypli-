@@ -2,34 +2,25 @@
 
 namespace App\Http\Controllers\Api\User;
 
-use App\Enums\UserRole;
+
+use App\Helpers\ApiResponse;
 use App\Http\Controllers\Controller;
+use app\Http\Requests\User\UpdateUserRequest;
 use App\Models\User;
 use App\Repositories\UserRepository;
-use Illuminate\Http\Request;
-use Illuminate\Validation\Rule;
 
 class UpdateUserController extends Controller
 {
     public function __construct(
         private UserRepository $userRepository
     ){}
-    public function __invoke(Request $request , User $user)
+    public function __invoke(UpdateUserRequest $request , User $user)
     {
-        $data = $request->validate([
-            'name' => 'sometimes|required|string|max:255',
-            'prenom' => 'sometimes|required|string|max:255',
-            'email' => [
-                'sometimes' , 'required', 'email' , Rule::unique('users' , 'email')->ignore($user->id),
-            ],
-            'password' => 'sometimes|required|string|min:8',
-            'telephone' => 'sometimes|required|string|max:255',
-            'role' => ['sometimes' , 'required' , Rule::enum(UserRole::class)],
-        ]);
+        $data = $request->validated();
         $user = $this->userRepository->update($user, $data);
-        return response([
-            'message' => 'user updated successfully',
-            'user' => $user->fresh()
-        ]);
+        return ApiResponse::success(
+            'User updated successfully',
+            $user->fresh()
+        );
     }
 }
