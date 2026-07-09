@@ -1,8 +1,8 @@
 <?php
-namespace App\Http\Controllers\Api\Project;
+namespace app\Http\Controllers\Api\Project;
 
 use App\Helpers\ApiResponse;
-use App\Http\Controllers\Controller;
+use app\Http\Controllers\Controller;
 use App\Models\Project;
 use App\Repositories\ProjectRepository;
 

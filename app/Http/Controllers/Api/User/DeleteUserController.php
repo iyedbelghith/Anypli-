@@ -1,12 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\Api\User;
+namespace app\Http\Controllers\Api\User;
 
 use App\Helpers\ApiResponse;
 use App\Http\Controllers\Controller;
 use App\Repositories\UserRepository;
 use http\Client\Curl\User;
-use Illuminate\Http\Request;
 
 class DeleteUserController extends Controller
 {

@@ -2,7 +2,7 @@
 
 
 
-namespace App\Http\Controllers\Api\Affectation;
+namespace app\Http\Controllers\Api\Affectation;
 
 use App\Helpers\ApiResponse;
 use App\Http\Controllers\Controller;
