@@ -6,9 +6,17 @@ use App\Models\Project;
 
 class ProjectRepository
 {
-    public function getAll(int $perPage = 10)
+    public function getAll(int $perPage = 10, bool $with_client = false, bool $with_users = false)
     {
-        return Project::with(['client', 'users'])->paginate($perPage);
+        $relations = [];
+
+        if ($with_client) {
+            $relations[] = 'client';
+        }
+        if ($with_users) {
+            $relations[] = 'users';
+        }
+        return Project::with($relations)->paginate($perPage);
     }
 
     public function findById(int $id): Project

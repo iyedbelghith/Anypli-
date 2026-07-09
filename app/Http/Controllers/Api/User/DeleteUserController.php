@@ -4,8 +4,9 @@ namespace app\Http\Controllers\Api\User;
 
 use App\Helpers\ApiResponse;
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use App\Repositories\UserRepository;
-use http\Client\Curl\User;
+
 
 class DeleteUserController extends Controller
 {

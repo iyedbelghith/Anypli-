@@ -3,7 +3,8 @@
 namespace app\Http\Controllers\Api\client;
 
 use App\Helpers\ApiResponse;
-use app\Http\Controllers\Controller;
+use App\Http\Controllers\Controller;
+use App\Models\Client;
 use App\Repositories\ClientRepository;
 
 class DeleteClientController extends Controller

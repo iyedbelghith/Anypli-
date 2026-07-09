@@ -4,7 +4,6 @@ namespace app\Http\Controllers\Api\Affectation;
 
 use App\Helpers\ApiResponse;
 use App\Http\Controllers\Controller;
-use app\Http\Requests\Affectation\StoreAffectationRequest;
 use App\Http\Requests\Affectation\StoreAffectationRequest;
 use App\Repositories\AffectationRepository;
 
