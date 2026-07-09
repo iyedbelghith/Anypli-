@@ -13,8 +13,22 @@ return new class extends Migration
     {
         Schema::create('project_user', function (Blueprint $table) {
             $table->id();
+
+            $table->foreignId('project_id')
+                ->constrained('projects')
+                ->cascadeOnDelete();
+
+            $table->foreignId('user_id')
+                ->constrained('users')
+                ->cascadeOnDelete();
+
+            $table->date('date_affectation')->nullable();
+            $table->string('role_in_project')->nullable();
+
             $table->timestamps();
             $table->softDeletes();
+
+            $table->unique(['project_id', 'user_id']);
         });
     }
 
