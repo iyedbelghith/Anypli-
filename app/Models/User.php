@@ -22,7 +22,7 @@ class User extends Authenticatable
         'email',
         'password',
         'telephone',
-        'role' => UserRole::class,
+        'role'
     ];
 
 
@@ -37,7 +37,7 @@ class User extends Authenticatable
     }
     public function projects (){
         return $this->belongsToMany(Project::class , 'project_user')
-
+        ->withPivot('date_affectation', 'role_in_project')
         ->withTimestamps();
     }
     public function meetings()
@@ -51,6 +51,7 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'role' => UserRole::class,
         ];
     }
 }
