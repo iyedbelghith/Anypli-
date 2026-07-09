@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\Project;
 
+use App\Helpers\ApiResponse;
 use App\Http\Controllers\Controller;
 use App\Models\Project;
 use App\Repositories\ProjectRepository;
@@ -12,9 +13,9 @@ class DeleteProjectController extends Controller{
     ){}
     public function __invoke(Project $project){
         $this -> projectRepository -> delete($project);
-        return response() -> json([
-            'message' => 'Project deleted'
-        ]) ;
+        return ApiResponse::deleted(
+            'Project deleted successfully'
+        );
 
     }
 }

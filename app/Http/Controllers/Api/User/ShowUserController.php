@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\User;
 
+use App\Helpers\ApiResponse;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Repositories\UserRepository;
@@ -14,8 +15,9 @@ class ShowUserController extends Controller
     ){}
     public function __invoke(User $user)
     {
-        return response()->json([
-            'user' => $this ->userRepository ->findById($user->id)
-        ]);
+        return ApiResponse::success(
+            'User retrieved successfully',
+            $this->userRepository->findById($user->id)
+        );
     }
 }
