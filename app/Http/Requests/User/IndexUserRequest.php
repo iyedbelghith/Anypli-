@@ -1,71 +1,29 @@
 <?php
 
-namespace App\Http\Requests\User;
+namespace app\Http\Requests\User;
 
-use Illuminate\Foundation\Http\FormRequest;
+use App\Http\Requests\BaseIndexRequest;
 
-class IndexUserRequest extends FormRequest
+class IndexUserRequest extends BaseIndexRequest
 {
-    public function authorize(): bool
-    {
-        return true;
-    }
-
-    protected function prepareForValidation(): void
-    {
-        $this->merge([
-            'with_client' => filter_var(
-                $this->query('with_client', false),
-                FILTER_VALIDATE_BOOLEAN
-            ),
-
-            'with_projects' => filter_var(
-                $this->query('with_projects', false),
-                FILTER_VALIDATE_BOOLEAN
-            ),
-        ]);
-    }
-
     public function rules(): array
     {
-        return [
-            'page' => [
-                'sometimes',
-                'integer',
-                'min:1',
-            ],
-
-            'per_page' => [
-                'sometimes',
-                'integer',
-                'min:1',
-                'max:50',
-            ],
-
-            'with_client' => [
-                'sometimes',
-                'boolean',
-            ],
-
-            'with_projects' => [
-                'sometimes',
-                'boolean',
-            ],
-        ];
-    }
-
-    public function perPage(): int
-    {
-        return (int) $this->query('per_page', 10);
+        return array_merge(
+            $this->paginationRules(),
+            $this->booleanRules([
+                'with_client',
+                'with_projects',
+            ])
+        );
     }
 
     public function withClient(): bool
     {
-        return (bool) $this->input('with_client', false);
+        return $this->booleanValue('with_client');
     }
 
     public function withProjects(): bool
     {
-        return (bool) $this->input('with_projects', false);
+        return $this->booleanValue('with_projects');
     }
 }

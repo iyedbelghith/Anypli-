@@ -1,5 +1,5 @@
 <?php
-namespace App\Enums;
+namespace app\Enums;
 
 enum ProjectStatus: string{
     case EN_ETUDE = 'en_etude';

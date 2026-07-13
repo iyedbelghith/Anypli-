@@ -1,71 +1,31 @@
 <?php
 
-namespace App\Http\Requests\Affectation;
+namespace app\Http\Requests\Affectation;
 
-use Illuminate\Foundation\Http\FormRequest;
+use App\Http\Requests\BaseIndexRequest;
 
-class IndexAffectationRequest extends FormRequest
+class IndexAffectationRequest extends BaseIndexRequest
 {
-    public function authorize(): bool
-    {
-        return true;
-    }
-
-    protected function prepareForValidation(): void
-    {
-        $this->merge([
-            'with_project' => filter_var(
-                $this->query('with_project', false),
-                FILTER_VALIDATE_BOOLEAN
-            ),
-
-            'with_user' => filter_var(
-                $this->query('with_user', false),
-                FILTER_VALIDATE_BOOLEAN
-            ),
-        ]);
-    }
 
     public function rules(): array
     {
-        return [
-            'page' => [
-                'sometimes',
-                'integer',
-                'min:1',
-            ],
 
-            'per_page' => [
-                'sometimes',
-                'integer',
-                'min:1',
-                'max:50',
-            ],
-
-            'with_project' => [
-                'sometimes',
-                'boolean',
-            ],
-
-            'with_user' => [
-                'sometimes',
-                'boolean',
-            ],
-        ];
-    }
-
-    public function perPage(): int
-    {
-        return (int) $this->query('per_page', 10);
+        return array_merge(
+            $this->paginationRules(),
+            $this->booleanRules([
+                'with_project',
+                'with_user',
+            ])
+        );
     }
 
     public function withProject(): bool
     {
-        return (bool) $this->input('with_project', false);
+        return $this->booleanValue('with_project');
     }
 
     public function withUser(): bool
     {
-        return (bool) $this->input('with_user', false);
+        return $this->booleanValue('with_user');
     }
 }
