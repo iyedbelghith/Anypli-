@@ -1,5 +1,9 @@
 <?php
 
+use App\Http\Controllers\Api\Auth\LoginController;
+use App\Http\Controllers\Api\Auth\LogoutController;
+use App\Http\Controllers\Api\Auth\MeController;
+use App\Http\Controllers\Api\Auth\RegisterController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -62,3 +66,15 @@ Route::post('/users', StoreUserController::class);
 Route::get('/users/{user}', ShowUserController::class);
 Route::put('/users/{user}', UpdateUserController::class);
 Route::delete('/users/{user}', DeleteUserController::class);
+
+
+
+
+
+Route::post('/register', RegisterController::class);
+Route::post('/login', LoginController::class);
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/me', MeController::class);
+    Route::post('/logout', LogoutController::class);
+});

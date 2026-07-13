@@ -6,8 +6,8 @@ namespace app\Http\Controllers\Api\Affectation;
 
 use App\Helpers\ApiResponse;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Affectation\IndexAffectationRequest;
 use App\Repositories\AffectationRepository;
-use Illuminate\Http\Request;
 
 class IndexAffectationController extends Controller
 {
@@ -15,33 +15,16 @@ class IndexAffectationController extends Controller
         private AffectationRepository $affectationRepository
     ) {}
 
-    public function __invoke(Request $request)
+    public function __invoke(IndexAffectationRequest $request)
     {
-        $attributes = $this->getAttributes($request);
-
         return ApiResponse::success(
             'Affectations retrieved successfully',
             $this->affectationRepository->getAll(
-                $attributes['perPage'],
-                $attributes['withProject'],
-                $attributes['withUser']
+                $request->perPage(),
+                $request->withProject(),
+                $request->withUser()
             )
         );
     }
-    private function getAttributes(Request $request): array
-    {
-        return [
-            'perPage' => min((int) $request->query('per_page', 10), 50),
 
-            'withProject' => filter_var(
-                $request->query('with_project', false),
-                FILTER_VALIDATE_BOOLEAN
-            ),
-
-            'withUser' => filter_var(
-                $request->query('with_user', false),
-                FILTER_VALIDATE_BOOLEAN
-            ),
-        ];
-    }
 }

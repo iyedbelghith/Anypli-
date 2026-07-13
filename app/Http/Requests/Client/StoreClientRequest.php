@@ -3,6 +3,7 @@
 namespace app\Http\Requests\Client;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StoreClientRequest extends FormRequest
 {
@@ -16,7 +17,8 @@ class StoreClientRequest extends FormRequest
         return [
             'user_id' => [
                 'nullable',
-                'exists:users,id'
+                Rule::exists('users', 'id')
+                    ->whereNull('deleted_at'),
             ],
 
             'nom_entreprise' => [

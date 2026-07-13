@@ -6,7 +6,8 @@ namespace app\Http\Controllers\Api\Project;
 
 use App\Helpers\ApiResponse;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Projet\UpdateProjectRequest;
+use app\Http\Requests\Project\UpdateProjectRequest;
+
 use App\Models\Project;
 use App\Repositories\ProjectRepository;
 

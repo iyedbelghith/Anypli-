@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Helpers;
+namespace app\Helpers;
 use Symfony\Component\HttpFoundation\Response as HttpStatus;
 
 class ApiResponse

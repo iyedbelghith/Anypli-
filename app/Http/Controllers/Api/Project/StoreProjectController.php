@@ -2,7 +2,7 @@
 namespace app\Http\Controllers\Api\Project;
 use App\Helpers\ApiResponse;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Projet\StoreProjectRequest;
+use App\Http\Requests\Project\StoreProjectRequest;
 use App\Repositories\ProjectRepository;
 
 class StoreProjectController extends Controller
