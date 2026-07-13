@@ -3,8 +3,8 @@
 namespace app\Http\Controllers\Api\client;
 
 use App\Helpers\ApiResponse;
-use app\Http\Controllers\Controller;
-use app\Http\Requests\Client\StoreClientRequest;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\Client\StoreClientRequest;
 use App\Repositories\ClientRepository;
 
 

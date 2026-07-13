@@ -5,7 +5,7 @@ namespace app\Http\Controllers\Api\User;
 
 use App\Helpers\ApiResponse;
 use App\Http\Controllers\Controller;
-use app\Http\Requests\User\UpdateUserRequest;
+use App\Http\Requests\User\UpdateUserRequest;
 use App\Models\User;
 use App\Repositories\UserRepository;
 

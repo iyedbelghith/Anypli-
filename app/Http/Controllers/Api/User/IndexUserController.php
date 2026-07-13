@@ -15,11 +15,31 @@ class IndexUserController extends Controller
 
     public function __invoke(Request $request)
     {
-        $perPage = $request->query('per_page', 10);
+        $attributes = $this->getAttributes($request);
+
         return ApiResponse::success(
             'Users retrieved successfully',
-            $this->userRepository->getAll($perPage)
+            $this->userRepository->getAll(
+                $attributes['perPage'],
+                $attributes['withClient'],
+                $attributes['withProjects']
+            )
         );
+    }
+    private function getAttributes(Request $request): array
+    {
+        return [
+            'perPage' => min((int) $request->query('per_page', 10), 50),
 
+            'withClient' => filter_var(
+                $request->query('with_client', false),
+                FILTER_VALIDATE_BOOLEAN
+            ),
+
+            'withProjects' => filter_var(
+                $request->query('with_projects', false),
+                FILTER_VALIDATE_BOOLEAN
+            ),
+        ];
     }
 }

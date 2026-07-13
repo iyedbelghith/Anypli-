@@ -6,9 +6,22 @@ use App\Models\Affectation;
 
 class AffectationRepository
 {
-    public function getAll( int $perPage = 10 )
-    {
-        return Affectation::with(['project', 'user'])->paginate($perPage);
+    public function getAll(
+        int $perPage = 10,
+        bool $withProject = false,
+        bool $withUser = false
+    ) {
+        $relations = [];
+
+        if ($withProject) {
+            $relations[] = 'project';
+        }
+
+        if ($withUser) {
+            $relations[] = 'user';
+        }
+
+        return Affectation::with($relations)->paginate($perPage);
     }
 
     public function findById(int $id): Affectation

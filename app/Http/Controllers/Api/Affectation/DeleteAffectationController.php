@@ -7,7 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Affectation;
 use App\Repositories\AffectationRepository;
 
-class DeleteAffectationController extends Controller
+class  DeleteAffectationController extends Controller
 {
     public function __construct(
         private AffectationRepository $affectationRepository

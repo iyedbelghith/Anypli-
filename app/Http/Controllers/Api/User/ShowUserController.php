@@ -3,7 +3,7 @@
 namespace app\Http\Controllers\Api\User;
 
 use App\Helpers\ApiResponse;
-use app\Http\Controllers\Controller;
+use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Repositories\UserRepository;
 
