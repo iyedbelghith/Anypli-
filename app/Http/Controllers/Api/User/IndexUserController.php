@@ -4,6 +4,7 @@ namespace app\Http\Controllers\Api\User;
 
 use App\Helpers\ApiResponse;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\User\IndexUserRequest;
 use App\Repositories\UserRepository;
 use Illuminate\Http\Request;
 
@@ -13,33 +14,16 @@ class IndexUserController extends Controller
        private UserRepository $userRepository
    ){}
 
-    public function __invoke(Request $request)
+    public function __invoke(IndexUserRequest $request)
     {
-        $attributes = $this->getAttributes($request);
-
         return ApiResponse::success(
             'Users retrieved successfully',
             $this->userRepository->getAll(
-                $attributes['perPage'],
-                $attributes['withClient'],
-                $attributes['withProjects']
+                $request->perPage(),
+                $request->withClient(),
+                $request->withProjects()
             )
         );
     }
-    private function getAttributes(Request $request): array
-    {
-        return [
-            'perPage' => min((int) $request->query('per_page', 10), 50),
 
-            'withClient' => filter_var(
-                $request->query('with_client', false),
-                FILTER_VALIDATE_BOOLEAN
-            ),
-
-            'withProjects' => filter_var(
-                $request->query('with_projects', false),
-                FILTER_VALIDATE_BOOLEAN
-            ),
-        ];
-    }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace app\Http\Requests\Affectation;
+namespace App\Http\Requests\Affectation;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
@@ -17,14 +17,18 @@ class StoreAffectationRequest extends FormRequest
         return [
             'project_id' => [
                 'required',
-                'exists:projects,id'
+                Rule::exists('projects', 'id')
+                    ->whereNull('deleted_at'),
             ],
 
             'user_id' => [
                 'required',
-                'exists:users,id',
+                Rule::exists('users', 'id')
+                    ->whereNull('deleted_at'),
+
                 Rule::unique('project_user', 'user_id')
                     ->where('project_id', $this->project_id)
+                    ->whereNull('deleted_at'),
             ],
 
             'date_affectation' => [

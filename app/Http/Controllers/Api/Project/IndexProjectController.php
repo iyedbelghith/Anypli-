@@ -4,8 +4,9 @@ namespace App\Http\Controllers\Api\Project;
 
 use App\Helpers\ApiResponse;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Project\IndexProjectRequest;
 use App\Repositories\ProjectRepository;
-use Illuminate\Http\Request;
+
 
 class IndexProjectController extends Controller
 {
@@ -13,34 +14,18 @@ class IndexProjectController extends Controller
         private ProjectRepository $projectRepository
     ) {}
 
-    public function __invoke(Request $request)
+    public function __invoke(IndexProjectRequest $request)
     {
-        $attributes = $this->getAttributes($request);
 
         return ApiResponse::success(
             'Projects retrieved successfully',
             $this->projectRepository->getAll(
-                $attributes['perPage'],
-                $attributes['withClient'],
-                $attributes['withUsers']
+                $request->perPage(),
+                $request->withClient(),
+                $request->withUsers()
             )
         );
     }
 
-    private function getAttributes(Request $request): array
-    {
-        return [
-            'perPage' => min((int) $request->query('per_page', 10), 50),
 
-            'withClient' => filter_var(
-                $request->query('with_client', false),
-                FILTER_VALIDATE_BOOLEAN
-            ),
-
-            'withUsers' => filter_var(
-                $request->query('with_users', false),
-                FILTER_VALIDATE_BOOLEAN
-            ),
-        ];
-    }
 }

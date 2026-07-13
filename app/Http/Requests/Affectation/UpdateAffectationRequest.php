@@ -1,6 +1,6 @@
 <?php
 
-namespace app\Http\Requests\Affectation;
+namespace App\Http\Requests\Affectation;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
@@ -22,16 +22,20 @@ class UpdateAffectationRequest extends FormRequest
             'project_id' => [
                 'sometimes',
                 'required',
-                'exists:projects,id'
+                Rule::exists('projects', 'id')
+                    ->whereNull('deleted_at'),
             ],
 
             'user_id' => [
                 'sometimes',
                 'required',
-                'exists:users,id',
+                Rule::exists('users', 'id')
+                    ->whereNull('deleted_at'),
+
                 Rule::unique('project_user', 'user_id')
                     ->where('project_id', $projectId)
-                    ->ignore($affectation?->id)
+                    ->whereNull('deleted_at')
+                    ->ignore($affectation?->id),
             ],
 
             'date_affectation' => [

@@ -17,31 +17,14 @@ class IndexAffectationController extends Controller
 
     public function __invoke(Request $request)
     {
-        $attributes = $this->getAttributes($request);
-
         return ApiResponse::success(
             'Affectations retrieved successfully',
             $this->affectationRepository->getAll(
-                $attributes['perPage'],
-                $attributes['withProject'],
-                $attributes['withUser']
+                $request->perPage(),
+                $request->withProject(),
+                $request->withUser()
             )
         );
     }
-    private function getAttributes(Request $request): array
-    {
-        return [
-            'perPage' => min((int) $request->query('per_page', 10), 50),
 
-            'withProject' => filter_var(
-                $request->query('with_project', false),
-                FILTER_VALIDATE_BOOLEAN
-            ),
-
-            'withUser' => filter_var(
-                $request->query('with_user', false),
-                FILTER_VALIDATE_BOOLEAN
-            ),
-        ];
-    }
 }

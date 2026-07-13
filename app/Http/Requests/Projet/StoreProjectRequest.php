@@ -1,6 +1,6 @@
 <?php
 
-namespace app\Http\Requests\Projet;
+namespace app\Http\Requests\Project;
 
 use App\Enums\ProjectStatus;
 use Illuminate\Foundation\Http\FormRequest;
@@ -18,7 +18,8 @@ class StoreProjectRequest extends FormRequest
         return [
             'client_id' => [
                 'required',
-                'exists:clients,id'
+                Rule::exists('clients', 'id')
+                    ->whereNull('deleted_at'),
             ],
 
             'titre' => [
