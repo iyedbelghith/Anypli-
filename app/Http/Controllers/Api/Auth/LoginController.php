@@ -6,16 +6,20 @@ use App\Helpers\ApiResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Models\User;
+use App\Services\AuthService;
 use Illuminate\Support\Facades\Hash;
 use Symfony\Component\HttpFoundation\Response as HttpStatus;
 
 class LoginController extends Controller
 {
+    public function __construct (
+        private AuthService $authService,
+    ){}
     public function __invoke(LoginRequest $request)
     {
-        $credentials = $request->validated();
+        $authData = $this->authService->login($request->validated());
 
-        if (! $token = auth('api')->attempt($credentials)) {
+        if (! $authData) {
             return ApiResponse::error(
                 'Invalid email or password',
                 null,
@@ -25,12 +29,7 @@ class LoginController extends Controller
 
         return ApiResponse::success(
             'Login successful',
-            [
-                'user' => auth('api')->user(),
-                'access_token' => $token,
-                'token_type' => 'Bearer',
-                'expires_in' => auth('api')->factory()->getTTL() * 60,
-            ]
+            $authData
         );
     }
 }
