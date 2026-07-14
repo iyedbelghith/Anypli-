@@ -13,13 +13,9 @@ class LoginController extends Controller
 {
     public function __invoke(LoginRequest $request)
     {
-        $data = $request->validated();
+        $credentials = $request->validated();
 
-        $user = User::where('email', $data['email'])
-            ->whereNull('deleted_at')
-            ->first();
-
-        if (! $user || ! Hash::check($data['password'], $user->password)) {
+        if (! $token = auth('api')->attempt($credentials)) {
             return ApiResponse::error(
                 'Invalid email or password',
                 null,
@@ -27,14 +23,13 @@ class LoginController extends Controller
             );
         }
 
-        $token = $user->createToken('auth_token')->plainTextToken;
-
         return ApiResponse::success(
             'Login successful',
             [
-                'user' => $user,
+                'user' => auth('api')->user(),
                 'access_token' => $token,
                 'token_type' => 'Bearer',
+                'expires_in' => auth('api')->factory()->getTTL() * 60,
             ]
         );
     }

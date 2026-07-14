@@ -30,51 +30,72 @@ use App\Http\Controllers\Api\User\StoreUserController;
 use App\Http\Controllers\Api\User\ShowUserController;
 use App\Http\Controllers\Api\User\UpdateUserController;
 use App\Http\Controllers\Api\User\DeleteUserController;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
-})->middleware('auth:sanctum');
-
-
-// Clients
-Route::get('/clients', IndexClientController::class);
-Route::post('/clients', StoreClientController::class);
-Route::get('/clients/{client}', ShowClientController::class);
-Route::put('/clients/{client}', UpdateClientController::class);
-Route::delete('/clients/{client}', DeleteClientController::class);
-
-
-// Projects
-Route::get('/projects', IndexProjectController::class);
-Route::post('/projects', StoreProjectController::class);
-Route::get('/projects/{project}', ShowProjectController::class);
-Route::put('/projects/{project}', UpdateProjectController::class);
-Route::delete('/projects/{project}', DeleteProjectController::class);
-
-
-// Affectations
-Route::get('/affectations', IndexAffectationController::class);
-Route::post('/affectations', StoreAffectationController::class);
-Route::get('/affectations/{affectation}', ShowAffectationController::class);
-Route::put('/affectations/{affectation}', UpdateAffectationController::class);
-Route::delete('/affectations/{affectation}', DeleteAffectationController::class);
-
-
-// Users
-Route::get('/users', IndexUserController::class);
-Route::post('/users', StoreUserController::class);
-Route::get('/users/{user}', ShowUserController::class);
-Route::put('/users/{user}', UpdateUserController::class);
-Route::delete('/users/{user}', DeleteUserController::class);
-
-
-
+})->middleware('auth:api');
 
 
 Route::post('/register', RegisterController::class);
-Route::post('/login', LoginController::class);
+Route::post('/login', LoginController::class)->name('login');
 
-Route::middleware('auth:sanctum')->group(function () {
+Route::middleware('jwt.auth')->group(function () {
     Route::get('/me', MeController::class);
     Route::post('/logout', LogoutController::class);
+
+
+    Route::middleware('role:admin,employe')->group(function () {
+        // Clients
+        Route::get('/clients', IndexClientController::class);
+        Route::post('/clients', StoreClientController::class);
+        Route::get('/clients/{client}', ShowClientController::class);
+        Route::put('/clients/{client}', UpdateClientController::class);
+        Route::delete('/clients/{client}', DeleteClientController::class);
+
+
+        // Projects
+        Route::get('/projects', IndexProjectController::class);
+        Route::post('/projects', StoreProjectController::class);
+        Route::get('/projects/{project}', ShowProjectController::class);
+        Route::put('/projects/{project}', UpdateProjectController::class);
+        Route::delete('/projects/{project}', DeleteProjectController::class);
+
+
+        // Affectations
+        Route::get('/affectations', IndexAffectationController::class);
+        Route::post('/affectations', StoreAffectationController::class);
+        Route::get('/affectations/{affectation}', ShowAffectationController::class);
+        Route::put('/affectations/{affectation}', UpdateAffectationController::class);
+        Route::delete('/affectations/{affectation}', DeleteAffectationController::class);
+    });
+
+    Route::middleware('role:admin')->group(function () {
+        // Users
+        Route::get('/users', IndexUserController::class);
+        Route::post('/users', StoreUserController::class);
+        Route::get('/users/{user}', ShowUserController::class);
+        Route::put('/users/{user}', UpdateUserController::class);
+        Route::delete('/users/{user}', DeleteUserController::class);
+    });
+    // tes routes CRUD protégées ici
+});
+
+Route::get('/debug-token', function (Request $request) {
+    try {
+        $user = JWTAuth::parseToken()->authenticate();
+
+        return response()->json([
+            'authorization_header' => $request->header('Authorization'),
+            'bearer_token' => $request->bearerToken(),
+            'jwt_user' => $user,
+        ]);
+    } catch (\Exception $e) {
+        return response()->json([
+            'authorization_header' => $request->header('Authorization'),
+            'bearer_token' => $request->bearerToken(),
+            'error_class' => get_class($e),
+            'error_message' => $e->getMessage(),
+        ], 401);
+    }
 });

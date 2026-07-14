@@ -3,16 +3,16 @@
 namespace app\Http\Controllers\Api\Auth;
 use App\Helpers\ApiResponse;
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Tymon\JWTAuth\Facades\JWTAuth;
+
 
 class LogoutController extends Controller
 {
-    public function __invoke(Request $request)
+    public function __invoke()
     {
-        $request->user()->currentAccessToken()->delete();
+        JWTAuth::parseToken()->invalidate();
 
-        return ApiResponse::success(
-            'Logout successful'
-        );
+        return ApiResponse::success('Logout successful');
     }
 }

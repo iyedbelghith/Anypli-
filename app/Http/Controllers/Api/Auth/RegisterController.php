@@ -7,15 +7,14 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\RegisterRequest;
 use App\Models\User;
 
+
 class RegisterController extends Controller
 {
     public function __invoke(RegisterRequest $request)
     {
-        $data = $request->validated();
+        $user = User::create($request->validated());
 
-        $user = User::create($data);
-
-        $token = $user->createToken('auth_token')->plainTextToken;
+        $token = auth('api')->login($user);
 
         return ApiResponse::created(
             'Registration successful',
@@ -23,6 +22,7 @@ class RegisterController extends Controller
                 'user' => $user,
                 'access_token' => $token,
                 'token_type' => 'Bearer',
+                'expires_in' => auth('api')->factory()->getTTL() * 60,
             ]
         );
     }
