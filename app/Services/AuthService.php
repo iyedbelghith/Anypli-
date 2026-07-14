@@ -8,23 +8,55 @@ use Tymon\JWTAuth\Facades\JWTAuth;
 class AuthService{
     public function login (array $credentials): ?array
     {
-        $token =Auth::guard('api')->attempt($credentials);
-        if(! $token){
+        $accessToken = Auth::guard('api')
+            ->setTTL(60)
+            ->attempt($credentials);
+
+
+        if(! $accessToken){
             return null;
         }
-        return $this->respondWithToken($token);
+        $user =Auth::guard('api')->user();
+        JWTAuth::factory()->setTTL(20160);
+        $refreshToken = JWTAuth::claims([
+            'type' => 'refresh',
+        ])->fromUser($user);
+
+        return [
+            'user' => $user,
+            'accessToken' => $accessToken,
+            'refreshToken' => $refreshToken
+        ];
     }
 
-    public function refresh(): array{
-        $token =JWTAuth :: parseToken()->refresh();
-        return $this ->respondWithToken($token);
-    }
-    private function respondWithToken(string $token): array
+    public function refresh(): array
     {
+        $payload = JWTAuth::parseToken()->getPayload();
+
+
+
+        if ($payload->get('type') !== 'refresh') {
+            throw new \Exception('Invalid refresh token');
+        }
+
+        $user = JWTAuth::parseToken()->authenticate();
+
+        $newAccessToken = Auth::guard('api')
+            ->setTTL(60)
+            ->login($user);
+
         return [
-            'access_token' => $token,
-            'token_type' => 'bearer',
-            'expires_in' => Auth::guard('api')->factory()->getTTL() * 60
+            'accessToken' => $newAccessToken,
+            
         ];
+    }
+    public function me()
+    {
+        return JWTAuth::parseToken()->authenticate();
+    }
+
+    public function logout(): void
+    {
+        JWTAuth::parseToken()->invalidate();
     }
 }
