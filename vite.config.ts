@@ -1,6 +1,7 @@
 import { defineConfig } from 'vite'
 import react, { reactCompilerPreset } from '@vitejs/plugin-react'
 import babel from '@rolldown/plugin-babel'
+import path from 'path'
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -8,4 +9,17 @@ export default defineConfig({
     react(),
     babel({ presets: [reactCompilerPreset()] })
   ],
+  resolve: {
+    alias: {
+      "@app": path.resolve(__dirname, "src/app"),
+      "@features": path.resolve(__dirname, "src/features"),
+      "@shared": path.resolve(__dirname, "src/shared"),
+      "@constants": path.resolve(__dirname, "src/constants"),
+      "@themes": path.resolve(__dirname, "src/themes"),
+      "@layouts": path.resolve(__dirname, "src/layouts"),
+      "@pages": path.resolve(__dirname, "src/pages"),
+      "@routes": path.resolve(__dirname, "src/routes")
+    }
+  }
+
 })
