@@ -1,10 +1,6 @@
 export const AUTH_SLICE_NAME = "auth" as const;
+export const AUTH_API_REDUCER_PATH = "authApi" as const;
 
-export const AUTH_THUNK_TYPES = {
-    LOGIN: `${AUTH_SLICE_NAME}/login`,
-    FETCH_ME: `${AUTH_SLICE_NAME}/fetchMe`,
-    LOGOUT: `${AUTH_SLICE_NAME}/logout`,
-} as const;
 
 export const AUTH_ERROR_MESSAGES = {
     LOGIN_FAILED: "Email ou mot de passe incorrect",
@@ -19,4 +15,8 @@ export const AUTH_STATE_DEFAULTS = {
     IS_AUTHENTICATED: false,
     LOADING: false,
     ERROR: null,
+} as const;
+
+export const AUTH_STATE_VALUES = {
+    AUTHENTICATED: true,
 } as const;

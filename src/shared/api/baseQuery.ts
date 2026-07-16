@@ -1,29 +1,32 @@
 import { fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
-import { API_CONFIG } from "../../constants/apiConfig";
+import { API_CONFIG } from "@constants/apiConfig";
+
 import {
     AUTH_SCHEMES,
     CONTENT_TYPES,
     HTTP_HEADERS,
-} from "../../constants/http";
-import { STORAGE_KEYS } from "../../constants/storageKeys";
+} from "@constants/http";
 
-export const baseQuery = fetchBaseQuery({
-    baseUrl: API_CONFIG.BASE_URL,
+import { authStorage } from "@features/auth/utils/authStorage";
 
-    prepareHeaders: (headers) => {
-        const accessToken = localStorage.getItem(STORAGE_KEYS.ACCESS_TOKEN);
+export const baseQuery = (baseUrl: string = API_CONFIG.BASE_URL) =>
+    fetchBaseQuery({
+        baseUrl,
 
-        headers.set(HTTP_HEADERS.ACCEPT, CONTENT_TYPES.APPLICATION_JSON);
-        headers.set(HTTP_HEADERS.CONTENT_TYPE, CONTENT_TYPES.APPLICATION_JSON);
+        prepareHeaders: (headers) => {
+            const accessToken = authStorage.getAccessToken();
 
-        if (accessToken) {
-            headers.set(
-                HTTP_HEADERS.AUTHORIZATION,
-                `${AUTH_SCHEMES.BEARER} ${accessToken}`
-            );
-        }
+            headers.set(HTTP_HEADERS.ACCEPT, CONTENT_TYPES.APPLICATION_JSON);
+            headers.set(HTTP_HEADERS.CONTENT_TYPE, CONTENT_TYPES.APPLICATION_JSON);
 
-        return headers;
-    },
-});
+            if (accessToken) {
+                headers.set(
+                    HTTP_HEADERS.AUTHORIZATION,
+                    `${AUTH_SCHEMES.BEARER} ${accessToken}`
+                );
+            }
+
+            return headers;
+        },
+    });

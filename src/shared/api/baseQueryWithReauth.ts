@@ -4,45 +4,59 @@ import type {
     FetchBaseQueryError,
 } from "@reduxjs/toolkit/query";
 
-import { baseQuery } from "./baseQuery";
+import { baseQuery } from "@shared/api/baseQuery";
 
-import { API_ENDPOINTS } from "../../constants/apiEndpoints";
+import { API_ENDPOINTS } from "@constants/apiEndpoints";
 import {
     AUTH_SCHEMES,
     HTTP_HEADERS,
+    HTTP_METHODS,
     HTTP_STATUS,
-} from "../../constants/http";
-import { STORAGE_KEYS } from "../../constants/storageKeys";
+} from "@constants/http";
 
-import type { ApiResponse } from "../interfaces/apiResponse.interface";
+import {
+    clearAuthState,
+    setAccessToken,
+} from "@features/auth/authSlice";
 
-interface RefreshResponse {
-    access_token: string;
-    token_type: string;
-    expires_in: number;
-}
+import { authStorage } from "@features/auth/utils/authStorage";
+
+import type { ApiResponse } from "@shared/types/apiResponse.types";
+import type { RefreshData } from "@features/auth/api/authApiInterface";
+
+const rawBaseQuery = baseQuery();
+
+const isAuthEndpoint = (args: string | FetchArgs): boolean => {
+    const url = typeof args === "string" ? args : args.url;
+
+    return (
+        url.includes(API_ENDPOINTS.AUTH.LOGIN) ||
+        url.includes(API_ENDPOINTS.AUTH.REFRESH)
+    );
+};
 
 export const baseQueryWithReauth: BaseQueryFn<
     string | FetchArgs,
     unknown,
     FetchBaseQueryError
 > = async (args, api, extraOptions) => {
-    let result = await baseQuery(args, api, extraOptions);
+    let result = await rawBaseQuery(args, api, extraOptions);
 
-    if (result.error?.status === HTTP_STATUS.UNAUTHORIZED) {
-        const refreshToken = localStorage.getItem(STORAGE_KEYS.REFRESH_TOKEN);
+    if (
+        result.error?.status === HTTP_STATUS.UNAUTHORIZED &&
+        !isAuthEndpoint(args)
+    ) {
+        const refreshToken = authStorage.getRefreshToken();
 
         if (!refreshToken) {
-            localStorage.removeItem(STORAGE_KEYS.ACCESS_TOKEN);
-            localStorage.removeItem(STORAGE_KEYS.REFRESH_TOKEN);
-
+            api.dispatch(clearAuthState());
             return result;
         }
 
-        const refreshResult = await baseQuery(
+        const refreshResult = await rawBaseQuery(
             {
                 url: API_ENDPOINTS.AUTH.REFRESH,
-                method: "POST",
+                method: HTTP_METHODS.POST,
                 headers: {
                     [HTTP_HEADERS.AUTHORIZATION]: `${AUTH_SCHEMES.BEARER} ${refreshToken}`,
                 },
@@ -52,17 +66,13 @@ export const baseQueryWithReauth: BaseQueryFn<
         );
 
         if (refreshResult.data) {
-            const response = refreshResult.data as ApiResponse<RefreshResponse>;
+            const refreshResponse = refreshResult.data as ApiResponse<RefreshData>;
 
-            localStorage.setItem(
-                STORAGE_KEYS.ACCESS_TOKEN,
-                response.data.access_token
-            );
+            api.dispatch(setAccessToken(refreshResponse.data.access_token));
 
-            result = await baseQuery(args, api, extraOptions);
+            result = await rawBaseQuery(args, api, extraOptions);
         } else {
-            localStorage.removeItem(STORAGE_KEYS.ACCESS_TOKEN);
-            localStorage.removeItem(STORAGE_KEYS.REFRESH_TOKEN);
+            api.dispatch(clearAuthState());
         }
     }
 

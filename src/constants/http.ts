@@ -19,3 +19,9 @@ export const CONTENT_TYPES = {
 export const AUTH_SCHEMES = {
     BEARER: "Bearer",
 } as const;
+export const HTTP_METHODS = {
+    GET: "GET",
+    POST: "POST",
+    PUT: "PUT",
+    DELETE: "DELETE",
+} as const;
