@@ -1,11 +1,5 @@
+import AppRoutes from "@routes/AppRoutes";
 
-
-function App() {
-  return (
-    <div >
-      <h1>Project Manager Front</h1>
-    </div>
-  )
+export default function App() {
+    return <AppRoutes />;
 }
-
-export default App
