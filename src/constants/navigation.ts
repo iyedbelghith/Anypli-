@@ -1,29 +1,30 @@
 import { ROUTES } from "@constants/routes";
 import { USER_ROLES } from "@constants/roles";
+import { dashboardTranslation } from "@constants/dashboard/dashboardTranslation";
 
 export const DASHBOARD_NAV_ITEMS = [
     {
-        labelKey: "dashboard",
+        label: dashboardTranslation.common.dashboard,
         path: ROUTES.DASHBOARD,
         allowedRoles: [USER_ROLES.ADMIN, USER_ROLES.EMPLOYEE, USER_ROLES.CLIENT],
     },
     {
-        labelKey: "users",
+        label: dashboardTranslation.common.users,
         path: ROUTES.USERS,
         allowedRoles: [USER_ROLES.ADMIN],
     },
     {
-        labelKey: "clients",
+        label: dashboardTranslation.common.clients,
         path: ROUTES.CLIENTS,
         allowedRoles: [USER_ROLES.ADMIN, USER_ROLES.EMPLOYEE],
     },
     {
-        labelKey: "projects",
+        label: dashboardTranslation.common.projects,
         path: ROUTES.PROJECTS,
         allowedRoles: [USER_ROLES.ADMIN, USER_ROLES.EMPLOYEE],
     },
     {
-        labelKey: "affectations",
+        label: dashboardTranslation.common.affectations,
         path: ROUTES.AFFECTATIONS,
         allowedRoles: [USER_ROLES.ADMIN, USER_ROLES.EMPLOYEE],
     },

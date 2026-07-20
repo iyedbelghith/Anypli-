@@ -10,6 +10,7 @@ import {
     Toolbar,
     Typography,
 } from "@mui/material";
+import { dashboardTranslation } from "@constants/dashboard/dashboardTranslation";
 
 import { Link, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
@@ -28,7 +29,7 @@ export default function DashboardLayout({
     title,
 }: DashboardLayoutProps) {
     const location = useLocation();
-    const { t } = useTranslation("dashboard");
+    const { t } = useTranslation();
 
     const { user } = useAuthState();
     const { logout, isLoading } = useLogout();
@@ -67,7 +68,7 @@ export default function DashboardLayout({
                                     ...(isActive ? dashboardLayoutStyles.activeNavItem : {}),
                                 }}
                             >
-                                <ListItemText primary={t(item.labelKey)} />
+                                <ListItemText primary={t(item.label)} />
                             </ListItemButton>
                         );
                     })}
@@ -96,9 +97,8 @@ export default function DashboardLayout({
                             color="error"
                             onClick={logout}
                             disabled={isLoading}
-                            sx={dashboardLayoutStyles.logoutButton}
-                        >
-                            {t("logout")}
+                            sx={dashboardLayoutStyles.logoutButton}>
+                            {t(dashboardTranslation.common.logout)}
                         </Button>
                     </Box>
                 </Toolbar>

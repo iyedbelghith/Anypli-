@@ -1,25 +1,26 @@
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
 
-import frAuth from "./locales/fr/auth.json";
-import frDashboard from "./locales/fr/dashboard.json";
-import frCommon from "./locales/fr/common.json";
+import { auth as frAuth } from "./locales/fr/auth";
+import { dashboard as frDashboard } from "./locales/fr/dashboard";
 
-import enAuth from "./locales/en/auth.json";
-import enDashboard from "./locales/en/dashboard.json";
-import enCommon from "./locales/en/common.json";
+import { auth as enAuth } from "./locales/en/auth";
+import { dashboard as enDashboard } from "./locales/en/dashboard";
 
 i18n.use(initReactI18next).init({
     resources: {
         fr: {
-            auth: frAuth,
-            dashboard: frDashboard,
-            common: frCommon,
+            translation: {
+                auth: frAuth,
+                dashboard: frDashboard,
+            },
         },
+
         en: {
-            auth: enAuth,
-            dashboard: enDashboard,
-            common: enCommon,
+            translation: {
+                auth: enAuth,
+                dashboard: enDashboard,
+            },
         },
     },
 
