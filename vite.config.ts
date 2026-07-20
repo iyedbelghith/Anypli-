@@ -18,7 +18,8 @@ export default defineConfig({
       "@themes": path.resolve(__dirname, "src/themes"),
       "@layouts": path.resolve(__dirname, "src/layouts"),
       "@pages": path.resolve(__dirname, "src/pages"),
-      "@routes": path.resolve(__dirname, "src/routes")
+      "@routes": path.resolve(__dirname, "src/routes"),
+      "@i18n": path.resolve(__dirname, "src/i18n")
     }
   }
 
