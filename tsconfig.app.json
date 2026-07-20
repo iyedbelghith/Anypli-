@@ -50,6 +50,9 @@
       ],
       "@routes/*": [
         "src/routes/*"
+      ],
+      "@locales": [
+        "src/i18n/locales/*"
       ]
     }
   },

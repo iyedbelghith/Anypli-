@@ -3,6 +3,10 @@ import { useTranslation } from "react-i18next";
 
 import DashboardLayout from "@layouts/DashboardLayout/DashboardLayouts";
 import { dashboardTranslation } from "@constants/dashboard/dashboardTranslation";
+import {
+    dashboardGridSizes,
+    dashboardPageStyles,
+} from "./DashboardPageStyle";
 
 export default function DashboardPage() {
     const { t } = useTranslation();
@@ -10,8 +14,8 @@ export default function DashboardPage() {
     return (
         <DashboardLayout title={t(dashboardTranslation.common.dashboard)}>
             <Grid container spacing={3}>
-                <Grid size={{ xs: 12, md: 3 }}>
-                    <Paper sx={{ padding: 3, borderRadius: 3 }}>
+                <Grid size={dashboardGridSizes.kpiCard}>
+                    <Paper sx={dashboardPageStyles.card}>
                         <Typography variant="body2" color="text.secondary">
                             {t(dashboardTranslation.kpi.totalClients)}
                         </Typography>
@@ -21,8 +25,8 @@ export default function DashboardPage() {
                     </Paper>
                 </Grid>
 
-                <Grid size={{ xs: 12, md: 3 }}>
-                    <Paper sx={{ padding: 3, borderRadius: 3 }}>
+                <Grid size={dashboardGridSizes.mainChart}>
+                    <Paper sx={dashboardPageStyles.card}>
                         <Typography variant="body2" color="text.secondary">
                             {t(dashboardTranslation.kpi.totalProjects)}
                         </Typography>
@@ -32,8 +36,8 @@ export default function DashboardPage() {
                     </Paper>
                 </Grid>
 
-                <Grid size={{ xs: 12, md: 3 }}>
-                    <Paper sx={{ padding: 3, borderRadius: 3 }}>
+                <Grid size={dashboardGridSizes.sideChart}>
+                    <Paper sx={dashboardPageStyles.card}>
                         <Typography variant="body2" color="text.secondary">
                             {t(dashboardTranslation.kpi.projectsInProgress)}
                         </Typography>
@@ -43,8 +47,8 @@ export default function DashboardPage() {
                     </Paper>
                 </Grid>
 
-                <Grid size={{ xs: 12, md: 3 }}>
-                    <Paper sx={{ padding: 3, borderRadius: 3 }}>
+                <Grid size={dashboardGridSizes.recentProjects}>
+                    <Paper sx={dashboardPageStyles.card}>
                         <Typography variant="body2" color="text.secondary">
                             {t(dashboardTranslation.kpi.activeEmployees)}
                         </Typography>
@@ -54,8 +58,8 @@ export default function DashboardPage() {
                     </Paper>
                 </Grid>
 
-                <Grid size={{ xs: 12, md: 8 }}>
-                    <Paper sx={{ padding: 3, borderRadius: 3, minHeight: 260 }}>
+                <Grid size={dashboardGridSizes.mainChart}>
+                    <Paper sx={dashboardPageStyles.sectionCard}>
                         <Typography variant="h6" sx={{ fontWeight: 700 }}>
                             {t(dashboardTranslation.sections.projectsOverview)}
                         </Typography>
@@ -78,8 +82,8 @@ export default function DashboardPage() {
                     </Paper>
                 </Grid>
 
-                <Grid size={{ xs: 12, md: 4 }}>
-                    <Paper sx={{ padding: 3, borderRadius: 3, minHeight: 260 }}>
+                <Grid size={dashboardGridSizes.recentActivity}>
+                    <Paper sx={dashboardPageStyles.sectionCard}>
                         <Typography variant="h6" sx={{ fontWeight: 700 }}>
                             {t(dashboardTranslation.sections.recentActivity)}
                         </Typography>
