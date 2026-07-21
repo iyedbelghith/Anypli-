@@ -19,6 +19,7 @@ import { useTranslation } from "react-i18next";
 
 import { DASHBOARD_NAV_ITEMS } from "@constants/navigation";
 import { ROUTES } from "@constants/routes";
+import { authTranslation } from "@constants/auth/authTranslation";
 import { useAuthState } from "@features/auth/hooks";
 
 import anypliLogo from "../../../../assets/images/anypli-logo.png";
@@ -57,7 +58,7 @@ export default function Sidebar() {
                     </Box>
 
                     <Typography sx={sidebarStyles.brandName}>
-                        Project Manager
+                        {t(authTranslation.branding.appName)}
                     </Typography>
                 </Box>
 

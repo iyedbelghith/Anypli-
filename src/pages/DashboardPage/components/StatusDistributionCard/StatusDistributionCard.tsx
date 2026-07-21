@@ -1,9 +1,11 @@
 import { Box, Paper, Typography } from "@mui/material";
 
+import type { StatusColor } from "@shared/types/statusColor.types";
+
 import type { StatusDistributionCardProps } from "./StatusDistributionCardInterface";
 import { statusDistributionCardStyles } from "./StatusDistributionCardStyle";
 
-const getDotStyle = (color: "blue" | "orange" | "green") => {
+const getDotStyle = (color: StatusColor) => {
     if (color === "blue") {
         return statusDistributionCardStyles.blueDot;
     }

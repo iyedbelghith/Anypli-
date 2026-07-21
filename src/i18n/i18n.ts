@@ -7,12 +7,20 @@ import { dashboard as frDashboard } from "./locales/fr/dashboard";
 import { auth as enAuth } from "./locales/en/auth";
 import { dashboard as enDashboard } from "./locales/en/dashboard";
 
+import { users as frUsers } from "./locales/fr/users";
+import { users as enUsers } from "./locales/en/users";
+
+import { clients as frClients } from "./locales/fr/clients";
+import { clients as enClients } from "./locales/en/clients";
+
 i18n.use(initReactI18next).init({
     resources: {
         fr: {
             translation: {
                 auth: frAuth,
                 dashboard: frDashboard,
+                users: frUsers,
+                clients: frClients,
             },
         },
 
@@ -20,6 +28,8 @@ i18n.use(initReactI18next).init({
             translation: {
                 auth: enAuth,
                 dashboard: enDashboard,
+                users: enUsers,
+                clients: enClients,
             },
         },
     },

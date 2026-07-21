@@ -6,7 +6,7 @@ import FolderOutlinedIcon from "@mui/icons-material/FolderOutlined";
 import AccessTimeOutlinedIcon from "@mui/icons-material/AccessTimeOutlined";
 import GroupAddOutlinedIcon from "@mui/icons-material/GroupAddOutlined";
 
-import DashboardLayout from "@layouts/DashboardLayout/DashboardLayouts";
+import DashboardLayout from "@layouts/DashboardLayout";
 import KpiCard from "@shared/components/KpiCard";
 
 import { dashboardTranslation } from "@constants/dashboard/dashboardTranslation";

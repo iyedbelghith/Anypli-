@@ -1,3 +1,5 @@
+import type { StatusColor } from "@shared/types/statusColor.types";
+
 export interface DashboardProject {
     title: string;
     client: string;
@@ -20,5 +22,5 @@ export interface DashboardChartItem {
 export interface DashboardStatusItem {
     label: string;
     value: number;
-    color: "blue" | "orange" | "green";
+    color: StatusColor;
 }

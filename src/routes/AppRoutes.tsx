@@ -9,6 +9,10 @@ import RoleRoute from "@shared/components/RoleRoute";
 import LoginPage from "@pages/LoginPage";
 import DashboardPage from "@pages/DashboardPage";
 import UsersPage from "@pages/UsersPage";
+import ClientsPage from "@pages/ClientsPage";
+import ProjectsPage from "@pages/ProjectsPage";
+import AffectationsPage from "@pages/AffectationsPage";
+
 
 export default function AppRoutes() {
     return (
@@ -31,6 +35,49 @@ export default function AppRoutes() {
                         <ProtectedRoute>
                             <RoleRoute allowedRoles={[USER_ROLES.ADMIN]}>
                                 <UsersPage />
+                            </RoleRoute>
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path={ROUTES.USERS}
+                    element={
+                        <ProtectedRoute>
+                            <RoleRoute allowedRoles={[USER_ROLES.ADMIN]}>
+                                <UsersPage />
+                            </RoleRoute>
+                        </ProtectedRoute>
+                    }
+                />
+
+                <Route
+                    path={ROUTES.CLIENTS}
+                    element={
+                        <ProtectedRoute>
+                            <RoleRoute allowedRoles={[USER_ROLES.ADMIN, USER_ROLES.EMPLOYEE]}>
+                                <ClientsPage />
+                            </RoleRoute>
+                        </ProtectedRoute>
+                    }
+                />
+
+                <Route
+                    path={ROUTES.PROJECTS}
+                    element={
+                        <ProtectedRoute>
+                            <RoleRoute allowedRoles={[USER_ROLES.ADMIN, USER_ROLES.EMPLOYEE]}>
+                                <ProjectsPage />
+                            </RoleRoute>
+                        </ProtectedRoute>
+                    }
+                />
+
+                <Route
+                    path={ROUTES.AFFECTATIONS}
+                    element={
+                        <ProtectedRoute>
+                            <RoleRoute allowedRoles={[USER_ROLES.ADMIN, USER_ROLES.EMPLOYEE]}>
+                                <AffectationsPage />
                             </RoleRoute>
                         </ProtectedRoute>
                     }
