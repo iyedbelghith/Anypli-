@@ -10,4 +10,7 @@ export const API_ENDPOINTS = {
     PROJECTS: "/projects",
     CLIENTS: "/clients",
     AFFECTATIONS: "/affectations",
+    DASHBOARD: {
+        STATS: "/dashboard/stats",
+    },
 } as const;
