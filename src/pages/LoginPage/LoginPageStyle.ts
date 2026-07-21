@@ -70,7 +70,6 @@ export const loginPageStyles = {
     logoBox: {
         width: 74,
         height: 48,
-        backgroundColor: "white",
         borderRadius: 1,
         display: "flex",
         alignItems: "center",

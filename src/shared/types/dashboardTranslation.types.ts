@@ -22,5 +22,8 @@ export type DashboardTranslationType = {
         recentActivity: string;
         noRecentActivity: string;
         chartPlaceholder: string;
+        statusDistribution: string;
+        recentProjects: string;
+        viewAll: string;
     };
 };

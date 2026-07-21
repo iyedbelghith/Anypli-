@@ -24,5 +24,8 @@ export const dashboardTranslation: DashboardTranslationType = {
         recentActivity: "dashboard.sections.recentActivity",
         noRecentActivity: "dashboard.sections.noRecentActivity",
         chartPlaceholder: "dashboard.sections.chartPlaceholder",
+        statusDistribution: "dashboard.sections.statusDistribution",
+        recentProjects: "dashboard.sections.recentProjects",
+        viewAll: "dashboard.sections.viewAll",
     },
 };

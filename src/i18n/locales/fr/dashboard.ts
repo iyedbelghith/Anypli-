@@ -24,5 +24,8 @@ export const dashboard: DashboardTranslationType = {
         recentActivity: "Activité récente",
         noRecentActivity: "Aucune activité récente.",
         chartPlaceholder: "Emplacement du graphique",
+        viewAll: "Voir tout →",
+        recentProjects: "Projets récents",
+        statusDistribution: "Répartition des statuts",
     },
 };
