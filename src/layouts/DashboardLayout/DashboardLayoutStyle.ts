@@ -1,5 +1,3 @@
-import { SIDEBAR_WIDTH } from "./components/Sidebar/SidebarStyle";
-
 export const dashboardLayoutStyles = {
     root: {
         display: "flex",
@@ -9,8 +7,13 @@ export const dashboardLayoutStyles = {
 
     main: {
         flexGrow: 1,
-        marginLeft: `${SIDEBAR_WIDTH}px`,
-        padding: 3,
+        minWidth: 0,
+        width: "100%",
+        padding: {
+            xs: 2,
+            sm: 3,
+        },
         paddingTop: "100px",
+        boxSizing: "border-box",
     },
 } as const;

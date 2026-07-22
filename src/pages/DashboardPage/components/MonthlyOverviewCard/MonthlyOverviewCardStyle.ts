@@ -1,9 +1,12 @@
 export const monthlyOverviewCardStyles = {
     card: {
+        width: "100%",
+        height: "100%",
         padding: 3,
         borderRadius: 4,
         minHeight: 280,
         boxShadow: "0 2px 10px rgba(15, 23, 42, 0.08)",
+        boxSizing: "border-box",
     },
 
     header: {
@@ -36,8 +39,14 @@ export const monthlyOverviewCardStyles = {
         marginTop: 2,
         display: "flex",
         alignItems: "flex-end",
-        justifyContent: "center",
-        gap: 4,
+        justifyContent: "space-between",
+        gap: {
+            xs: 1.5,
+            sm: 2.5,
+            md: 4,
+        },
+        overflowX: "auto",
+        paddingBottom: 1,
     },
 
     barGroup: {

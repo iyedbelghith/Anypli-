@@ -1,9 +1,14 @@
 export const statusDistributionCardStyles = {
     card: {
+        width: "100%",
+        height: "100%",
         padding: 3,
         borderRadius: 4,
         minHeight: 280,
         boxShadow: "0 2px 10px rgba(15, 23, 42, 0.08)",
+        boxSizing: "border-box",
+        display: "flex",
+        flexDirection: "column",
     },
 
     title: {
@@ -14,12 +19,22 @@ export const statusDistributionCardStyles = {
     donutWrapper: {
         display: "flex",
         justifyContent: "center",
-        marginY: 4,
+        alignItems: "center",
+        marginY: 3,
+        flex: 1,
     },
 
     donutChart: {
-        width: 190,
-        height: 190,
+        width: {
+            xs: 150,
+            sm: 170,
+            md: 190,
+        },
+        height: {
+            xs: 150,
+            sm: 170,
+            md: 190,
+        },
         borderRadius: "50%",
         background:
             "conic-gradient(#3b82f6 0deg 130deg, #10b981 130deg 240deg, #f59e0b 240deg 360deg)",

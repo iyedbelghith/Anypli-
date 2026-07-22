@@ -1,27 +1,28 @@
 export const dashboardGridSizes = {
     kpiCard: {
         xs: 12,
+        sm: 6,
         md: 3,
     },
 
     mainChart: {
         xs: 12,
-        md: 8,
+        lg: 8,
     },
 
     sideChart: {
         xs: 12,
-        md: 4,
+        lg: 4,
     },
 
     recentProjects: {
         xs: 12,
-        md: 8,
+        lg: 8,
     },
 
     recentActivity: {
         xs: 12,
-        md: 4,
+        lg: 4,
     },
 } as const;
 

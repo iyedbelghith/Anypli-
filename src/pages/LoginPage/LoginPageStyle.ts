@@ -6,13 +6,19 @@ export const loginPageStyles = {
     },
 
     leftSection: {
-        width: "52%",
+        width: {
+            md: "48%",
+            lg: "52%",
+        },
         minHeight: "100vh",
         position: "relative",
         overflow: "hidden",
         backgroundColor: "#17243d",
         color: "white",
-        padding: "48px",
+        padding: {
+            md: "36px",
+            lg: "48px",
+        },
         display: {
             xs: "none",
             md: "flex",
@@ -65,12 +71,14 @@ export const loginPageStyles = {
         display: "flex",
         alignItems: "center",
         gap: 2,
+        flexShrink: 0,
     },
 
     logoBox: {
         width: 74,
         height: 48,
         borderRadius: 1,
+        backgroundColor: "white",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
@@ -93,14 +101,19 @@ export const loginPageStyles = {
     brandContent: {
         position: "relative",
         zIndex: 1,
-        marginTop: "145px",
+        flex: 1,
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
         maxWidth: 580,
+        paddingY: 4,
     },
 
     title: {
         fontSize: {
-            md: "44px",
-            lg: "52px",
+            md: "36px",
+            lg: "48px",
+            xl: "52px",
         },
         lineHeight: 1.15,
         fontWeight: 800,
@@ -113,7 +126,10 @@ export const loginPageStyles = {
     },
 
     description: {
-        fontSize: "20px",
+        fontSize: {
+            md: "17px",
+            lg: "20px",
+        },
         lineHeight: 1.6,
         color: "rgba(255,255,255,0.88)",
         maxWidth: 620,
@@ -130,13 +146,17 @@ export const loginPageStyles = {
         display: "flex",
         alignItems: "center",
         gap: 2,
-        fontSize: "17px",
+        fontSize: {
+            md: "15px",
+            lg: "17px",
+        },
         color: "rgba(255,255,255,0.92)",
     },
 
     checkCircle: {
         width: 28,
         height: 28,
+        flexShrink: 0,
         borderRadius: "50%",
         backgroundColor: "rgba(196,32,38,0.28)",
         border: "1px solid rgba(196,32,38,0.45)",
@@ -151,28 +171,76 @@ export const loginPageStyles = {
     leftFooter: {
         position: "relative",
         zIndex: 1,
-        marginTop: "auto",
         color: "rgba(255,255,255,0.35)",
         fontSize: "14px",
+        flexShrink: 0,
     },
 
     rightSection: {
         flex: 1,
+        minWidth: 0,
         minHeight: "100vh",
-        position: "relative",
+        display: "flex",
+        flexDirection: "column",
+        boxSizing: "border-box",
+    },
+
+    rightTopBar: {
+        display: "flex",
+        alignItems: "center",
+        justifyContent: {
+            xs: "space-between",
+            md: "flex-end",
+        },
+        padding: {
+            xs: 2,
+            sm: 3,
+            md: 4,
+        },
+        flexShrink: 0,
+    },
+
+    mobileBrand: {
+        display: {
+            xs: "flex",
+            md: "none",
+        },
+        alignItems: "center",
+        gap: 1.5,
+    },
+
+    mobileLogoBox: {
+        width: 56,
+        height: 36,
+        borderRadius: 1,
+        backgroundColor: "white",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        padding: {
+        padding: 0.8,
+    },
+
+    mobileAppName: {
+        textTransform: "uppercase",
+        letterSpacing: "1.5px",
+        fontWeight: 800,
+        fontSize: "12px",
+        color: "#17243d",
+    },
+
+    rightContent: {
+        flex: 1,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        paddingX: {
             xs: 2,
             sm: 4,
         },
-    },
-
-    languageWrapper: {
-        position: "absolute",
-        top: 32,
-        right: 32,
+        paddingY: {
+            xs: 2,
+            sm: 3,
+        },
     },
 
     loginCard: {
@@ -184,12 +252,17 @@ export const loginPageStyles = {
         },
         borderRadius: "18px",
         boxShadow: "0 24px 60px rgba(15, 23, 42, 0.16)",
+        boxSizing: "border-box",
     },
 
     loginTitle: {
         fontWeight: 800,
         color: "#0f1f3d",
         marginBottom: 1,
+        fontSize: {
+            xs: "1.75rem",
+            sm: "2.125rem",
+        },
     },
 
     loginSubtitle: {
@@ -236,11 +309,16 @@ export const loginPageStyles = {
         fontSize: "14px",
     },
 
-    rightFooter: {
-        position: "absolute",
-        bottom: 32,
+    mobileFooter: {
+        display: {
+            xs: "block",
+            md: "none",
+        },
+        textAlign: "center",
         color: "#8a97b4",
         fontSize: "14px",
+        padding: 2,
+        flexShrink: 0,
     },
 
     error: {

@@ -124,84 +124,101 @@ export default function LoginPage() {
             </Box>
 
             <Box sx={loginPageStyles.rightSection}>
-                <Box sx={loginPageStyles.languageWrapper}>
+                <Box sx={loginPageStyles.rightTopBar}>
+                    <Box sx={loginPageStyles.mobileBrand}>
+                        <Box sx={loginPageStyles.mobileLogoBox}>
+                            <Box
+                                component="img"
+                                src={anypliLogo}
+                                alt="Anypli"
+                                sx={loginPageStyles.logo}
+                            />
+                        </Box>
+
+                        <Typography sx={loginPageStyles.mobileAppName}>
+                            {t(authTranslation.branding.appName)}
+                        </Typography>
+                    </Box>
+
                     <LanguageSwitcher />
                 </Box>
 
-                <Paper elevation={0} sx={loginPageStyles.loginCard}>
-                    <Typography variant="h4" sx={loginPageStyles.loginTitle}>
-                        {t(authTranslation.login.title)}
-                    </Typography>
+                <Box sx={loginPageStyles.rightContent}>
+                    <Paper elevation={0} sx={loginPageStyles.loginCard}>
+                        <Typography variant="h4" sx={loginPageStyles.loginTitle}>
+                            {t(authTranslation.login.title)}
+                        </Typography>
 
-                    <Typography variant="body1" sx={loginPageStyles.loginSubtitle}>
-                        {t(authTranslation.login.subtitle)}
-                    </Typography>
+                        <Typography variant="body1" sx={loginPageStyles.loginSubtitle}>
+                            {t(authTranslation.login.subtitle)}
+                        </Typography>
 
-                    {errorMessage && (
-                        <Alert severity="error" sx={loginPageStyles.error}>
-                            {errorMessage}
-                        </Alert>
-                    )}
+                        {errorMessage && (
+                            <Alert severity="error" sx={loginPageStyles.error}>
+                                {errorMessage}
+                            </Alert>
+                        )}
 
-                    <Box component="form" onSubmit={handleSubmit} sx={loginPageStyles.form}>
-                        <TextField
-                            name="email"
-                            type="email"
-                            label={t(authTranslation.login.email)}
-                            value={form.email}
-                            onChange={handleChange}
-                            placeholder="admin@anypli.com"
-                            fullWidth
-                            required
-                            sx={loginPageStyles.textField}
-                        />
+                        <Box component="form" onSubmit={handleSubmit} sx={loginPageStyles.form}>
+                            <TextField
+                                name="email"
+                                type="email"
+                                label={t(authTranslation.login.email)}
+                                value={form.email}
+                                onChange={handleChange}
+                                placeholder="admin@anypli.com"
+                                fullWidth
+                                required
+                                sx={loginPageStyles.textField}
+                            />
 
-                        <TextField
-                            name="password"
-                            type={showPassword ? "text" : "password"}
-                            label={t(authTranslation.login.password)}
-                            value={form.password}
-                            onChange={handleChange}
-                            placeholder="••••••••"
-                            fullWidth
-                            required
-                            sx={loginPageStyles.textField}
-                            slotProps={{
-                                input: {
-                                    endAdornment: (
-                                        <InputAdornment position="end">
-                                            <IconButton onClick={handleTogglePassword} edge="end">
-                                                {showPassword ? (
-                                                    <VisibilityOffOutlinedIcon />
-                                                ) : (
-                                                    <VisibilityOutlinedIcon />
-                                                )}
-                                            </IconButton>
-                                        </InputAdornment>
-                                    ),
-                                },
-                            }}
-                        />
+                            <TextField
+                                name="password"
+                                type={showPassword ? "text" : "password"}
+                                label={t(authTranslation.login.password)}
+                                value={form.password}
+                                onChange={handleChange}
+                                placeholder="••••••••"
+                                fullWidth
+                                required
+                                sx={loginPageStyles.textField}
+                                slotProps={{
+                                    input: {
+                                        endAdornment: (
+                                            <InputAdornment position="end">
+                                                <IconButton onClick={handleTogglePassword} edge="end">
+                                                    {showPassword ? (
+                                                        <VisibilityOffOutlinedIcon />
+                                                    ) : (
+                                                        <VisibilityOutlinedIcon />
+                                                    )}
+                                                </IconButton>
+                                            </InputAdornment>
+                                        ),
+                                    },
+                                }}
+                            />
 
-                        <Button
-                            type="submit"
-                            variant="contained"
-                            fullWidth
-                            disabled={isLoading}
-                            sx={loginPageStyles.button}
-                        >
-                            {isLoading
-                                ? t(authTranslation.login.loginLoading)
-                                : t(authTranslation.login.loginButton)}
-                        </Button>
-                    </Box>
+                            <Button
+                                type="submit"
+                                variant="contained"
+                                fullWidth
+                                disabled={isLoading}
+                                sx={loginPageStyles.button}
+                            >
+                                {isLoading
+                                    ? t(authTranslation.login.loginLoading)
+                                    : t(authTranslation.login.loginButton)}
+                            </Button>
+                        </Box>
 
-                    <Typography sx={loginPageStyles.demoText}>
-                        {t(authTranslation.login.demoCredentials)}
-                    </Typography>
-                </Paper>
+                        <Typography sx={loginPageStyles.demoText}>
+                            {t(authTranslation.login.demoCredentials)}
+                        </Typography>
+                    </Paper>
+                </Box>
 
-                <Box sx={loginPageStyles.rightFooter}>
+                <Box sx={loginPageStyles.mobileFooter}>
                     {t(authTranslation.branding.copyright)}
                 </Box>
             </Box>

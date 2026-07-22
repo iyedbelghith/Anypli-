@@ -6,7 +6,7 @@ import FolderOutlinedIcon from "@mui/icons-material/FolderOutlined";
 import AccessTimeOutlinedIcon from "@mui/icons-material/AccessTimeOutlined";
 import GroupAddOutlinedIcon from "@mui/icons-material/GroupAddOutlined";
 
-import DashboardLayout from "@layouts/DashboardLayout";
+import DashboardLayout from "@layouts/DashboardLayout/DashboardLayout";
 import KpiCard from "@shared/components/KpiCard";
 
 import { dashboardTranslation } from "@constants/dashboard/dashboardTranslation";
@@ -58,9 +58,13 @@ export default function DashboardPage() {
 
     return (
         <DashboardLayout title={t(dashboardTranslation.common.dashboard)}>
-            <Grid container spacing={3}>
+            <Grid container spacing={3} sx={{ alignItems: "stretch" }}>
                 {kpiCards.map((kpiCard) => (
-                    <Grid key={kpiCard.title} size={dashboardGridSizes.kpiCard}>
+                    <Grid
+                        key={kpiCard.title}
+                        size={dashboardGridSizes.kpiCard}
+                        sx={{ display: "flex" }}
+                    >
                         <KpiCard
                             title={kpiCard.title}
                             value={kpiCard.value}
@@ -71,7 +75,7 @@ export default function DashboardPage() {
                     </Grid>
                 ))}
 
-                <Grid size={dashboardGridSizes.mainChart}>
+                <Grid size={dashboardGridSizes.mainChart} sx={{ display: "flex" }}>
                     <MonthlyOverviewCard
                         title={t(dashboardTranslation.sections.projectsOverview)}
                         year="2025"
@@ -81,14 +85,14 @@ export default function DashboardPage() {
                     />
                 </Grid>
 
-                <Grid size={dashboardGridSizes.sideChart}>
+                <Grid size={dashboardGridSizes.sideChart} sx={{ display: "flex" }}>
                     <StatusDistributionCard
                         title={t(dashboardTranslation.sections.statusDistribution)}
                         statusData={dashboardStatusData}
                     />
                 </Grid>
 
-                <Grid size={dashboardGridSizes.recentProjects}>
+                <Grid size={dashboardGridSizes.recentProjects} sx={{ display: "flex" }}>
                     <RecentProjectsCard
                         title={t(dashboardTranslation.sections.recentProjects)}
                         viewAllLabel={t(dashboardTranslation.sections.viewAll)}
@@ -96,7 +100,7 @@ export default function DashboardPage() {
                     />
                 </Grid>
 
-                <Grid size={dashboardGridSizes.recentActivity}>
+                <Grid size={dashboardGridSizes.recentActivity} sx={{ display: "flex" }}>
                     <RecentActivityCard
                         title={t(dashboardTranslation.sections.recentActivity)}
                         activities={dashboardActivities}
