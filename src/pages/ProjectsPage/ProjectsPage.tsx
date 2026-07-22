@@ -17,6 +17,12 @@ import {
     Typography,
 } from "@mui/material";
 
+import AddProjectDialog, {
+    type AddProjectFormValues,
+} from "./components/AddProjectDialog";
+
+
+
 import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
@@ -30,16 +36,23 @@ import { projectsTranslation } from "@constants/projects/projectsTranslation";
 import { projectsMockData } from "./ProjectsPageData";
 import { projectsPageStyles } from "./ProjectsPageStyle";
 
-import type { ProjectStatus } from "./ProjectsPageInterface";
+import type {
+    ProjectStatus,
+    ProjectTableItem,
+} from "./ProjectsPageInterface";
 
 export default function ProjectsPage() {
     const { t } = useTranslation();
 
+    const [projects, setProjects] =
+        useState<ProjectTableItem[]>(projectsMockData);
+
     const [searchValue, setSearchValue] = useState<string>("");
     const [selectedStatus, setSelectedStatus] = useState<string>("all");
+    const [isAddDialogOpen, setIsAddDialogOpen] = useState<boolean>(false);
 
     const filteredProjects = useMemo(() => {
-        return projectsMockData.filter((project) => {
+        return projects.filter((project) => {
             const search = searchValue.trim().toLowerCase();
 
             const matchesSearch =
@@ -52,8 +65,7 @@ export default function ProjectsPage() {
 
             return matchesSearch && matchesStatus;
         });
-    }, [searchValue, selectedStatus]);
-
+    }, [projects, searchValue, selectedStatus]);
     const handleSearchChange = (event: ChangeEvent<HTMLInputElement>) => {
         setSearchValue(event.target.value);
     };
@@ -64,6 +76,28 @@ export default function ProjectsPage() {
 
     const getStatusLabel = (status: ProjectStatus) => {
         return t(projectsTranslation.status[status]);
+    };
+
+    const handleOpenAddDialog = () => {
+        setIsAddDialogOpen(true);
+    };
+
+    const handleCloseAddDialog = () => {
+        setIsAddDialogOpen(false);
+    };
+
+    const handleAddProject = (values: AddProjectFormValues) => {
+        const newProject: ProjectTableItem = {
+            id: Date.now(),
+            title: values.title,
+            client: values.client,
+            manager: values.manager,
+            status: values.status,
+            startDate: values.startDate,
+            endDate: values.endDate,
+        };
+
+        setProjects((currentProjects) => [newProject, ...currentProjects]);
     };
 
     const getStatusStyle = (status: ProjectStatus) => {
@@ -99,6 +133,7 @@ export default function ProjectsPage() {
                     variant="contained"
                     startIcon={<AddOutlinedIcon />}
                     sx={projectsPageStyles.addButton}
+                    onClick={handleOpenAddDialog}
                 >
                     {t(projectsTranslation.header.addButton)}
                 </Button>
@@ -222,6 +257,11 @@ export default function ProjectsPage() {
                     </Table>
                 </TableContainer>
             </Paper>
+            <AddProjectDialog
+                open={isAddDialogOpen}
+                onClose={handleCloseAddDialog}
+                onSubmit={handleAddProject}
+            />
         </DashboardLayout>
     );
 }

@@ -32,4 +32,18 @@ export type ProjectsTranslationType = {
     emptyState: {
         noProjects: string;
     };
+    form: {
+        title: string;
+        client: string;
+        manager: string;
+        status: string;
+        startDate: string;
+        endDate: string;
+        cancel: string;
+        save: string;
+    };
+
+    dialog: {
+        addTitle: string;
+    };
 };

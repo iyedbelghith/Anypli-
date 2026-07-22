@@ -30,4 +30,20 @@ export type UsersTranslationType = {
         active: string;
         inactive: string;
     };
+
+    dialog: {
+        title: string;
+        fields: {
+            name: string;
+            prenom: string;
+            email: string;
+            telephone: string;
+            role: string;
+            status: string;
+        };
+        actions: {
+            cancel: string;
+            submit: string;
+        };
+    };
 };

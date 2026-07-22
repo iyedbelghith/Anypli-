@@ -30,4 +30,17 @@ export type ClientsTranslationType = {
     emptyState: {
         noClients: string;
     };
+    form: {
+        name: string;
+        email: string;
+        phone: string;
+        company: string;
+        status: string;
+        cancel: string;
+        save: string;
+    };
+
+    dialog: {
+        addTitle: string;
+    };
 };

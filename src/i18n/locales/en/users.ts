@@ -34,4 +34,20 @@ export const users: UsersTranslationType = {
         active: "Active",
         inactive: "Inactive",
     },
+
+    dialog: {
+        title: "Add user",
+        fields: {
+            name: "Last name",
+            prenom: "First name",
+            email: "Email",
+            telephone: "Phone",
+            role: "Role",
+            status: "Status",
+        },
+        actions: {
+            cancel: "Cancel",
+            submit: "Add",
+        },
+    },
 };

@@ -30,16 +30,21 @@ import { usersTranslation } from "@constants/users/usersTranslation";
 import { usersMockData } from "./UsersPageData";
 import { usersPageStyles } from "./UsersPageStyle";
 
+import AddUserDialog from "./components/AddUserDialog";
+import type { NewUserInput } from "./components/AddUserDialog/AddUserDialogInterface";
+
 import type { UserTableItem } from "./UsersPageInterface";
 
 export default function UsersPage() {
     const { t } = useTranslation();
 
+    const [users, setUsers] = useState<UserTableItem[]>(usersMockData);
     const [searchValue, setSearchValue] = useState<string>("");
     const [selectedRole, setSelectedRole] = useState<string>("all");
+    const [isAddDialogOpen, setIsAddDialogOpen] = useState<boolean>(false);
 
     const filteredUsers = useMemo(() => {
-        return usersMockData.filter((user) => {
+        return users.filter((user) => {
             const fullName = `${user.prenom} ${user.name}`.toLowerCase();
             const email = user.email.toLowerCase();
             const search = searchValue.trim().toLowerCase();
@@ -52,7 +57,7 @@ export default function UsersPage() {
 
             return matchesSearch && matchesRole;
         });
-    }, [searchValue, selectedRole]);
+    }, [users, searchValue, selectedRole]);
 
     const handleSearchChange = (event: ChangeEvent<HTMLInputElement>) => {
         setSearchValue(event.target.value);
@@ -60,6 +65,21 @@ export default function UsersPage() {
 
     const handleRoleChange = (event: ChangeEvent<HTMLInputElement>) => {
         setSelectedRole(event.target.value);
+    };
+
+    const handleOpenAddDialog = () => {
+        setIsAddDialogOpen(true);
+    };
+
+    const handleCloseAddDialog = () => {
+        setIsAddDialogOpen(false);
+    };
+
+    const handleAddUser = (newUser: NewUserInput) => {
+        const nextId = Math.max(0, ...users.map((user) => user.id)) + 1;
+        const createdAt = new Date().toISOString().slice(0, 10);
+
+        setUsers([...users, { id: nextId, createdAt, ...newUser }]);
     };
 
     const getRoleLabel = (role: UserTableItem["role"]) => {
@@ -87,10 +107,41 @@ export default function UsersPage() {
                     variant="contained"
                     startIcon={<AddOutlinedIcon />}
                     sx={usersPageStyles.addButton}
+                    onClick={handleOpenAddDialog}
                 >
                     {t(usersTranslation.header.addButton)}
                 </Button>
             </Box>
+
+            <AddUserDialog
+                open={isAddDialogOpen}
+                onClose={handleCloseAddDialog}
+                onSubmit={handleAddUser}
+                labels={{
+                    title: t(usersTranslation.dialog.title),
+                    fields: {
+                        name: t(usersTranslation.dialog.fields.name),
+                        prenom: t(usersTranslation.dialog.fields.prenom),
+                        email: t(usersTranslation.dialog.fields.email),
+                        telephone: t(usersTranslation.dialog.fields.telephone),
+                        role: t(usersTranslation.dialog.fields.role),
+                        status: t(usersTranslation.dialog.fields.status),
+                    },
+                    roles: {
+                        admin: t(usersTranslation.roles.admin),
+                        employe: t(usersTranslation.roles.employe),
+                        client: t(usersTranslation.roles.client),
+                    },
+                    status: {
+                        active: t(usersTranslation.status.active),
+                        inactive: t(usersTranslation.status.inactive),
+                    },
+                    actions: {
+                        cancel: t(usersTranslation.dialog.actions.cancel),
+                        submit: t(usersTranslation.dialog.actions.submit),
+                    },
+                }}
+            />
 
             <Paper sx={usersPageStyles.card}>
                 <Box sx={usersPageStyles.filters}>

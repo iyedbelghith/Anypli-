@@ -39,16 +39,7 @@ export default function AppRoutes() {
                         </ProtectedRoute>
                     }
                 />
-                <Route
-                    path={ROUTES.USERS}
-                    element={
-                        <ProtectedRoute>
-                            <RoleRoute allowedRoles={[USER_ROLES.ADMIN]}>
-                                <UsersPage />
-                            </RoleRoute>
-                        </ProtectedRoute>
-                    }
-                />
+                
 
                 <Route
                     path={ROUTES.CLIENTS}

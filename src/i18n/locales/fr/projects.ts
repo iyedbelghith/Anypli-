@@ -34,4 +34,18 @@ export const projects: ProjectsTranslationType = {
     emptyState: {
         noProjects: "Aucun projet trouvé.",
     },
+    form: {
+        title: "Titre du projet",
+        client: "Client",
+        manager: "Responsable",
+        status: "Statut",
+        startDate: "Date début",
+        endDate: "Date fin",
+        cancel: "Annuler",
+        save: "Enregistrer",
+    },
+
+    dialog: {
+        addTitle: "Ajouter un projet",
+    },
 };

@@ -32,4 +32,17 @@ export const clients: ClientsTranslationType = {
     emptyState: {
         noClients: "No clients found.",
     },
+    form: {
+        name: "Client name",
+        email: "Email",
+        phone: "Phone",
+        company: "Company",
+        status: "Status",
+        cancel: "Cancel",
+        save: "Save",
+    },
+
+    dialog: {
+        addTitle: "Add client",
+    },
 };

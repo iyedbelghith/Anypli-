@@ -1,29 +1,30 @@
 export const loginPageStyles = {
     page: {
-        minHeight: "100vh",
+        width: "100%",
+        minHeight: "100dvh",
         display: "flex",
         backgroundColor: "#eef3f9",
+        overflow: "auto",
     },
 
     leftSection: {
-        width: {
-            md: "48%",
-            lg: "52%",
-        },
-        minHeight: "100vh",
+        flex: "1 1 50%",
+        minWidth: 0,
+        minHeight: "100dvh",
         position: "relative",
         overflow: "hidden",
         backgroundColor: "#17243d",
         color: "white",
         padding: {
-            md: "36px",
-            lg: "48px",
+            md: "40px",
+            lg: "56px",
         },
         display: {
             xs: "none",
             md: "flex",
         },
         flexDirection: "column",
+        boxSizing: "border-box",
     },
 
     gridOverlay: {
@@ -105,15 +106,14 @@ export const loginPageStyles = {
         display: "flex",
         flexDirection: "column",
         justifyContent: "center",
-        maxWidth: 580,
+        width: "100%",
+        maxWidth: 520,
         paddingY: 4,
     },
 
     title: {
         fontSize: {
-            md: "36px",
-            lg: "48px",
-            xl: "52px",
+            md: "clamp(28px, 3.5vw, 52px)",
         },
         lineHeight: 1.15,
         fontWeight: 800,
@@ -127,8 +127,7 @@ export const loginPageStyles = {
 
     description: {
         fontSize: {
-            md: "17px",
-            lg: "20px",
+            md: "clamp(15px, 1.4vw, 20px)",
         },
         lineHeight: 1.6,
         color: "rgba(255,255,255,0.88)",
@@ -147,8 +146,7 @@ export const loginPageStyles = {
         alignItems: "center",
         gap: 2,
         fontSize: {
-            md: "15px",
-            lg: "17px",
+            md: "clamp(14px, 1.2vw, 17px)",
         },
         color: "rgba(255,255,255,0.92)",
     },
@@ -177,9 +175,13 @@ export const loginPageStyles = {
     },
 
     rightSection: {
-        flex: 1,
+        flex: "1 1 50%",
         minWidth: 0,
-        minHeight: "100vh",
+        width: {
+            xs: "100%",
+            md: "auto",
+        },
+        minHeight: "100dvh",
         display: "flex",
         flexDirection: "column",
         boxSizing: "border-box",
@@ -230,17 +232,21 @@ export const loginPageStyles = {
 
     rightContent: {
         flex: 1,
+        width: "100%",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
         paddingX: {
             xs: 2,
-            sm: 4,
+            sm: 3,
+            md: 4,
+            lg: 6,
         },
         paddingY: {
             xs: 2,
             sm: 3,
         },
+        boxSizing: "border-box",
     },
 
     loginCard: {
@@ -248,7 +254,8 @@ export const loginPageStyles = {
         maxWidth: 460,
         padding: {
             xs: 3,
-            sm: 5,
+            sm: 4,
+            lg: 5,
         },
         borderRadius: "18px",
         boxShadow: "0 24px 60px rgba(15, 23, 42, 0.16)",

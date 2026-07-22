@@ -17,6 +17,12 @@ import {
     Typography,
 } from "@mui/material";
 
+import AddClientDialog, {
+    type AddClientFormValues,
+} from "./components/AddClientDialog";
+
+import type { ClientTableItem } from "./ClientsPageInterface";
+
 import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
@@ -33,11 +39,13 @@ import { clientsPageStyles } from "./ClientsPageStyle";
 export default function ClientsPage() {
     const { t } = useTranslation();
 
+    const [clients, setClients] = useState<ClientTableItem[]>(clientsMockData);
     const [searchValue, setSearchValue] = useState<string>("");
     const [selectedStatus, setSelectedStatus] = useState<string>("all");
+    const [isAddDialogOpen, setIsAddDialogOpen] = useState<boolean>(false);
 
     const filteredClients = useMemo(() => {
-        return clientsMockData.filter((client) => {
+        return clients.filter((client) => {
             const search = searchValue.trim().toLowerCase();
 
             const matchesSearch =
@@ -50,7 +58,29 @@ export default function ClientsPage() {
 
             return matchesSearch && matchesStatus;
         });
-    }, [searchValue, selectedStatus]);
+    }, [clients, searchValue, selectedStatus]);
+
+    const handleOpenAddDialog = () => {
+        setIsAddDialogOpen(true);
+    };
+
+    const handleCloseAddDialog = () => {
+        setIsAddDialogOpen(false);
+    };
+
+    const handleAddClient = (values: AddClientFormValues) => {
+        const newClient: ClientTableItem = {
+            id: Date.now(),
+            name: values.name,
+            email: values.email,
+            telephone: values.telephone,
+            company: values.company,
+            status: values.status,
+            createdAt: new Date().toISOString().split("T")[0],
+        };
+
+        setClients((currentClients) => [newClient, ...currentClients]);
+    };
 
     const handleSearchChange = (event: ChangeEvent<HTMLInputElement>) => {
         setSearchValue(event.target.value);
@@ -77,6 +107,7 @@ export default function ClientsPage() {
                     variant="contained"
                     startIcon={<AddOutlinedIcon />}
                     sx={clientsPageStyles.addButton}
+                    onClick={handleOpenAddDialog}
                 >
                     {t(clientsTranslation.header.addButton)}
                 </Button>
@@ -188,6 +219,11 @@ export default function ClientsPage() {
                     </Table>
                 </TableContainer>
             </Paper>
+            <AddClientDialog
+                open={isAddDialogOpen}
+                onClose={handleCloseAddDialog}
+                onSubmit={handleAddClient}
+            />
         </DashboardLayout>
     );
 }
