@@ -47,7 +47,7 @@ class AuthService{
 
         return [
             'accessToken' => $newAccessToken,
-            
+
         ];
     }
     public function me()
