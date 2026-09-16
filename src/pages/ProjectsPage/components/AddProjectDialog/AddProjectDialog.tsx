@@ -1,4 +1,4 @@
-import { useState, type ChangeEvent, type FormEvent } from "react";
+import { useEffect, useState, type ChangeEvent, type FormEvent } from "react";
 
 import {
     Box,
@@ -23,7 +23,7 @@ import type {
 
 import { addProjectDialogStyles } from "./AddProjectDialogStyle";
 
-const initialFormValues: AddProjectFormValues = {
+const EMPTY_FORM: AddProjectFormValues = {
     title: "",
     client: "",
     manager: "",
@@ -34,13 +34,25 @@ const initialFormValues: AddProjectFormValues = {
 
 export default function AddProjectDialog({
     open,
+    title,
+    submitLabel,
+    initialValues,
     onClose,
     onSubmit,
 }: AddProjectDialogProps) {
     const { t } = useTranslation();
 
-    const [formValues, setFormValues] =
-        useState<AddProjectFormValues>(initialFormValues);
+    const [formValues, setFormValues] = useState<AddProjectFormValues>(EMPTY_FORM);
+
+    useEffect(() => {
+        if (!open) {
+            return;
+        }
+
+        setFormValues(initialValues ?? EMPTY_FORM);
+        // Sync form only when the dialog opens
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [open]);
 
     const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
         const fieldName = event.target.name as AddProjectFormField;
@@ -51,12 +63,8 @@ export default function AddProjectDialog({
         });
     };
 
-    const resetForm = () => {
-        setFormValues(initialFormValues);
-    };
-
     const handleClose = () => {
-        resetForm();
+        setFormValues(EMPTY_FORM);
         onClose();
     };
 
@@ -72,7 +80,7 @@ export default function AddProjectDialog({
             endDate: formValues.endDate,
         });
 
-        resetForm();
+        setFormValues(EMPTY_FORM);
         onClose();
     };
 
@@ -83,7 +91,7 @@ export default function AddProjectDialog({
                 onSubmit={handleSubmit}
                 sx={addProjectDialogStyles.form}
             >
-                <DialogTitle>{t(projectsTranslation.dialog.addTitle)}</DialogTitle>
+                <DialogTitle>{title}</DialogTitle>
 
                 <DialogContent sx={addProjectDialogStyles.content}>
                     <TextField
@@ -185,7 +193,7 @@ export default function AddProjectDialog({
                         variant="contained"
                         sx={addProjectDialogStyles.submitButton}
                     >
-                        {t(projectsTranslation.form.save)}
+                        {submitLabel}
                     </Button>
                 </DialogActions>
             </Box>

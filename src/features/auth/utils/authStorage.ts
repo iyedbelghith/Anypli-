@@ -10,10 +10,20 @@ export const authStorage = {
     },
 
     setAccessToken(token: string): void {
+        if (!token || token === "undefined" || token === "null") {
+            localStorage.removeItem(STORAGE_KEYS.ACCESS_TOKEN);
+            return;
+        }
+
         localStorage.setItem(STORAGE_KEYS.ACCESS_TOKEN, token);
     },
 
     setRefreshToken(token: string): void {
+        if (!token || token === "undefined" || token === "null") {
+            localStorage.removeItem(STORAGE_KEYS.REFRESH_TOKEN);
+            return;
+        }
+
         localStorage.setItem(STORAGE_KEYS.REFRESH_TOKEN, token);
     },
 

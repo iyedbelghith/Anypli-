@@ -13,6 +13,9 @@ export type AddProjectFormField = keyof AddProjectFormValues;
 
 export interface AddProjectDialogProps {
     open: boolean;
+    title: string;
+    submitLabel: string;
+    initialValues?: AddProjectFormValues;
     onClose: () => void;
     onSubmit: (values: AddProjectFormValues) => void;
 }

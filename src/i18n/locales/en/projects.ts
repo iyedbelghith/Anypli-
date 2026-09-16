@@ -1,5 +1,3 @@
-// src/i18n/locales/en/projects.ts
-
 import type { ProjectsTranslationType } from "@shared/types/projectsTranslation.types";
 
 export const projects: ProjectsTranslationType = {
@@ -34,6 +32,7 @@ export const projects: ProjectsTranslationType = {
     emptyState: {
         noProjects: "No projects found.",
     },
+
     form: {
         title: "Project title",
         client: "Client",
@@ -43,9 +42,11 @@ export const projects: ProjectsTranslationType = {
         endDate: "End date",
         cancel: "Cancel",
         save: "Save",
+        update: "Update",
     },
 
     dialog: {
         addTitle: "Add project",
+        editTitle: "Edit project",
     },
 };

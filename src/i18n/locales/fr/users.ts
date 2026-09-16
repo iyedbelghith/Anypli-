@@ -35,6 +35,8 @@ export const users: UsersTranslationType = {
 
     dialog: {
         title: "Ajouter un utilisateur",
+        addTitle: "Ajouter un utilisateur",
+        editTitle: "Modifier un utilisateur",
         fields: {
             name: "Nom",
             prenom: "Prénom",
@@ -47,5 +49,21 @@ export const users: UsersTranslationType = {
             cancel: "Annuler",
             submit: "Ajouter",
         },
+    },
+
+    form: {
+        firstName: "Nom",
+        lastName: "Prénom",
+        email: "Email",
+        phone: "Téléphone",
+        password: "Mot de passe",
+        role: "Rôle",
+        status: "Statut",
+        cancel: "Annuler",
+        save: "Ajouter",
+        update: "Modifier",
+    },
+    emptyState: {
+        noUsers: "Aucun utilisateur trouvé.",
     },
 };

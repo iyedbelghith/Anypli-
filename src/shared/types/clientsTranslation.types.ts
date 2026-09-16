@@ -1,5 +1,3 @@
-// src/shared/types/clientsTranslation.types.ts
-
 export type ClientsTranslationType = {
     header: {
         title: string;
@@ -30,6 +28,7 @@ export type ClientsTranslationType = {
     emptyState: {
         noClients: string;
     };
+
     form: {
         name: string;
         email: string;
@@ -38,9 +37,11 @@ export type ClientsTranslationType = {
         status: string;
         cancel: string;
         save: string;
+        update: string;
     };
 
     dialog: {
         addTitle: string;
+        editTitle: string;
     };
 };

@@ -26,6 +26,25 @@ const capitalizeFirstLetter = (value?: string | null): string => {
     );
 };
 
+const normalizeAuthTokens = (data: Record<string, unknown>): {
+    accessToken: string;
+    refreshToken?: string;
+} => {
+    const accessToken =
+        (data.accessToken as string | undefined) ??
+        (data.access_token as string | undefined) ??
+        "";
+
+    const refreshToken =
+        (data.refreshToken as string | undefined) ??
+        (data.refresh_token as string | undefined);
+
+    return {
+        accessToken,
+        refreshToken,
+    };
+};
+
 export const encodeLogin = (payload: LoginPayload): LoginPayload => ({
     ...payload,
     email: normalizeText(payload.email),
@@ -49,19 +68,50 @@ export const encodeRegister = (
 export const decodeLogin = (
     response: ApiResponse<LoginData>
 ): ApiResponse<LoginData> => {
-    return response;
+    const tokens = normalizeAuthTokens(
+        response.data as unknown as Record<string, unknown>,
+    );
+
+    return {
+        ...response,
+        data: {
+            user: response.data.user,
+            accessToken: tokens.accessToken,
+            refreshToken: tokens.refreshToken ?? "",
+        },
+    };
 };
 
 export const decodeRegister = (
     response: ApiResponse<RegisterData>
 ): ApiResponse<RegisterData> => {
-    return response;
+    const tokens = normalizeAuthTokens(
+        response.data as unknown as Record<string, unknown>,
+    );
+
+    return {
+        ...response,
+        data: {
+            ...response.data,
+            accessToken: tokens.accessToken,
+            refreshToken: tokens.refreshToken,
+        },
+    };
 };
 
 export const decodeRefresh = (
     response: ApiResponse<RefreshData>
 ): ApiResponse<RefreshData> => {
-    return response;
+    const tokens = normalizeAuthTokens(
+        response.data as unknown as Record<string, unknown>,
+    );
+
+    return {
+        ...response,
+        data: {
+            accessToken: tokens.accessToken,
+        },
+    };
 };
 
 export const decodeMe = (

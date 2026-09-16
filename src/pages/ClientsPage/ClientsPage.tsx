@@ -40,9 +40,17 @@ export default function ClientsPage() {
     const { t } = useTranslation();
 
     const [clients, setClients] = useState<ClientTableItem[]>(clientsMockData);
+    const [selectedClient, setSelectedClient] = useState<ClientTableItem | null>(null);
     const [searchValue, setSearchValue] = useState<string>("");
     const [selectedStatus, setSelectedStatus] = useState<string>("all");
     const [isAddDialogOpen, setIsAddDialogOpen] = useState<boolean>(false);
+    const [isEditDialogOpen, setIsEditDialogOpen] = useState<boolean>(false);
+
+    const handleDeleteClient = (clientId: number) => {
+        setClients((currentClients) =>
+            currentClients.filter((client) => client.id !== clientId),
+        );
+    };
 
     const filteredClients = useMemo(() => {
         return clients.filter((client) => {
@@ -68,6 +76,16 @@ export default function ClientsPage() {
         setIsAddDialogOpen(false);
     };
 
+    const handleOpenEditDialog = (client: ClientTableItem) => {
+        setSelectedClient(client);
+        setIsEditDialogOpen(true);
+    };
+
+    const handleCloseEditDialog = () => {
+        setSelectedClient(null);
+        setIsEditDialogOpen(false);
+    };
+
     const handleAddClient = (values: AddClientFormValues) => {
         const newClient: ClientTableItem = {
             id: Date.now(),
@@ -80,6 +98,25 @@ export default function ClientsPage() {
         };
 
         setClients((currentClients) => [newClient, ...currentClients]);
+    };
+
+    const handleUpdateClient = (values: AddClientFormValues) => {
+        if (!selectedClient) {
+            return;
+        }
+
+        setClients((currentClients) =>
+            currentClients.map((client) =>
+                client.id === selectedClient.id
+                    ? {
+                          ...client,
+                          ...values,
+                      }
+                    : client,
+            ),
+        );
+
+        handleCloseEditDialog();
     };
 
     const handleSearchChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -194,11 +231,19 @@ export default function ClientsPage() {
 
                                     <TableCell align="right">
                                         <Box sx={clientsPageStyles.actions}>
-                                            <IconButton size="small" sx={clientsPageStyles.editButton}>
+                                            <IconButton
+                                                size="small"
+                                                sx={clientsPageStyles.editButton}
+                                                onClick={() => handleOpenEditDialog(client)}
+                                            >
                                                 <EditOutlinedIcon fontSize="small" />
                                             </IconButton>
 
-                                            <IconButton size="small" sx={clientsPageStyles.deleteButton}>
+                                            <IconButton
+                                                size="small"
+                                                sx={clientsPageStyles.deleteButton}
+                                                onClick={() => handleDeleteClient(client.id)}
+                                            >
                                                 <DeleteOutlineOutlinedIcon fontSize="small" />
                                             </IconButton>
                                         </Box>
@@ -210,7 +255,9 @@ export default function ClientsPage() {
                                 <TableRow>
                                     <TableCell colSpan={7}>
                                         <Box sx={clientsPageStyles.emptyState}>
-                                            <Typography>{t(clientsTranslation.emptyState.noClients)}</Typography>
+                                            <Typography>
+                                                {t(clientsTranslation.emptyState.noClients)}
+                                            </Typography>
                                         </Box>
                                     </TableCell>
                                 </TableRow>
@@ -219,10 +266,32 @@ export default function ClientsPage() {
                     </Table>
                 </TableContainer>
             </Paper>
+
             <AddClientDialog
                 open={isAddDialogOpen}
+                title={t(clientsTranslation.dialog.addTitle)}
+                submitLabel={t(clientsTranslation.form.save)}
                 onClose={handleCloseAddDialog}
                 onSubmit={handleAddClient}
+            />
+
+            <AddClientDialog
+                open={isEditDialogOpen}
+                title={t(clientsTranslation.dialog.editTitle)}
+                submitLabel={t(clientsTranslation.form.update)}
+                initialValues={
+                    selectedClient
+                        ? {
+                              name: selectedClient.name,
+                              email: selectedClient.email,
+                              telephone: selectedClient.telephone,
+                              company: selectedClient.company,
+                              status: selectedClient.status,
+                          }
+                        : undefined
+                }
+                onClose={handleCloseEditDialog}
+                onSubmit={handleUpdateClient}
             />
         </DashboardLayout>
     );

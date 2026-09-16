@@ -31,10 +31,13 @@
       ],
       "@routes/*": [
         "src/routes/*"
+      ],
+      "@i18n/*": [
+        "src/i18n/*"
+      ],
+      "@assets/*": [
+        "src/assets/*"
       ]
     }
-  },
-  "@i18n/*": [
-    "src/i18n/*"
-  ]
+  }
 }

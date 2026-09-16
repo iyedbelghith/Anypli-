@@ -67,8 +67,16 @@ export const baseQueryWithReauth: BaseQueryFn<
 
         if (refreshResult.data) {
             const refreshResponse = refreshResult.data as ApiResponse<RefreshData>;
+            const nextAccessToken =
+                refreshResponse.data.accessToken ??
+                (refreshResponse.data as { access_token?: string }).access_token;
 
-            api.dispatch(setAccessToken(refreshResponse.data.access_token));
+            if (!nextAccessToken) {
+                api.dispatch(clearAuthState());
+                return result;
+            }
+
+            api.dispatch(setAccessToken(nextAccessToken));
 
             result = await rawBaseQuery(args, api, extraOptions);
         } else {

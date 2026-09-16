@@ -1,5 +1,3 @@
-// src/constants/clients/clientsTranslation.ts
-
 import type { ClientsTranslationType } from "@shared/types/clientsTranslation.types";
 
 export const clientsTranslation: ClientsTranslationType = {
@@ -32,6 +30,7 @@ export const clientsTranslation: ClientsTranslationType = {
     emptyState: {
         noClients: "clients.emptyState.noClients",
     },
+
     form: {
         name: "clients.form.name",
         email: "clients.form.email",
@@ -40,9 +39,11 @@ export const clientsTranslation: ClientsTranslationType = {
         status: "clients.form.status",
         cancel: "clients.form.cancel",
         save: "clients.form.save",
+        update: "clients.form.update",
     },
 
     dialog: {
         addTitle: "clients.dialog.addTitle",
+        editTitle: "clients.dialog.editTitle",
     },
 };

@@ -1,5 +1,3 @@
-
-
 import type { UsersTranslationType } from "@shared/types/usersTranslation.types";
 
 export const users: UsersTranslationType = {
@@ -37,6 +35,8 @@ export const users: UsersTranslationType = {
 
     dialog: {
         title: "Add user",
+        addTitle: "Add user",
+        editTitle: "Edit user",
         fields: {
             name: "Last name",
             prenom: "First name",
@@ -49,5 +49,21 @@ export const users: UsersTranslationType = {
             cancel: "Cancel",
             submit: "Add",
         },
+    },
+
+    form: {
+        firstName: "Last name",
+        lastName: "First name",
+        email: "Email",
+        phone: "Phone",
+        password: "Password",
+        role: "Role",
+        status: "Status",
+        cancel: "Cancel",
+        save: "Add",
+        update: "Update",
+    },
+    emptyState: {
+        noUsers: "No users found.",
     },
 };

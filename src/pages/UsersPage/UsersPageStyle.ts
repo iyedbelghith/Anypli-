@@ -136,4 +136,11 @@ export const usersPageStyles = {
         textAlign: "center",
         color: "#64748b",
     },
+    pagination: {
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "flex-end",
+        gap: 2,
+        marginTop: 3,
+    },
 } as const;

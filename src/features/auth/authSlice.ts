@@ -15,8 +15,6 @@ import type {
     User,
 } from "./api/authApiInterface";
 
-
-
 const accessToken = authStorage.getAccessToken();
 const refreshToken = authStorage.getRefreshToken();
 
@@ -46,14 +44,16 @@ const authSlice = createSlice({
 
     reducers: {
         setCredentials: (state, action: PayloadAction<LoginData>) => {
-            state.user = action.payload.user;
-            state.access_token = action.payload.access_token;
-            state.refresh_token = action.payload.refresh_token;
+            const { user, accessToken, refreshToken } = action.payload;
+
+            state.user = user;
+            state.access_token = accessToken;
+            state.refresh_token = refreshToken;
             state.isAuthenticated = true;
             state.error = AUTH_STATE_DEFAULTS.ERROR;
 
-            authStorage.setAccessToken(action.payload.access_token);
-            authStorage.setRefreshToken(action.payload.refresh_token);
+            authStorage.setAccessToken(accessToken);
+            authStorage.setRefreshToken(refreshToken);
         },
 
         setUser: (state, action: PayloadAction<User>) => {
@@ -61,6 +61,7 @@ const authSlice = createSlice({
             state.isAuthenticated = true;
             state.error = AUTH_STATE_DEFAULTS.ERROR;
         },
+
         setAccessToken: (state, action: PayloadAction<string>) => {
             state.access_token = action.payload;
             state.isAuthenticated = AUTH_STATE_VALUES.AUTHENTICATED;

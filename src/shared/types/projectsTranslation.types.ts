@@ -1,5 +1,3 @@
-// src/shared/types/projectsTranslation.types.ts
-
 export type ProjectsTranslationType = {
     header: {
         title: string;
@@ -32,6 +30,7 @@ export type ProjectsTranslationType = {
     emptyState: {
         noProjects: string;
     };
+
     form: {
         title: string;
         client: string;
@@ -41,9 +40,11 @@ export type ProjectsTranslationType = {
         endDate: string;
         cancel: string;
         save: string;
+        update: string;
     };
 
     dialog: {
         addTitle: string;
+        editTitle: string;
     };
 };

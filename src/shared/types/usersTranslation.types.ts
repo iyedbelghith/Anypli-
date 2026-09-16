@@ -33,6 +33,8 @@ export type UsersTranslationType = {
 
     dialog: {
         title: string;
+        addTitle: string;
+        editTitle: string;
         fields: {
             name: string;
             prenom: string;
@@ -45,5 +47,21 @@ export type UsersTranslationType = {
             cancel: string;
             submit: string;
         };
+    };
+
+    form: {
+        firstName: string;
+        lastName: string;
+        email: string;
+        phone: string;
+        password: string;
+        role: string;
+        status: string;
+        cancel: string;
+        save: string;
+        update: string;
+    };
+    emptyState: {
+        noUsers: string;
     };
 };

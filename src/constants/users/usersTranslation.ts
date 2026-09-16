@@ -35,6 +35,8 @@ export const usersTranslation: UsersTranslationType = {
 
     dialog: {
         title: "users.dialog.title",
+        addTitle: "users.dialog.addTitle",
+        editTitle: "users.dialog.editTitle",
         fields: {
             name: "users.dialog.fields.name",
             prenom: "users.dialog.fields.prenom",
@@ -48,4 +50,21 @@ export const usersTranslation: UsersTranslationType = {
             submit: "users.dialog.actions.submit",
         },
     },
+
+    form: {
+        firstName: "users.form.firstName",
+        lastName: "users.form.lastName",
+        email: "users.form.email",
+        phone: "users.form.phone",
+        password: "users.form.password",
+        role: "users.form.role",
+        status: "users.form.status",
+        cancel: "users.form.cancel",
+        save: "users.form.save",
+        update: "users.form.update",
+    },
+    emptyState: {
+        noUsers: "users.emptyState.noUsers",
+    },
+    
 };

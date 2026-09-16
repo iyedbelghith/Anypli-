@@ -22,9 +22,9 @@ import { ROUTES } from "@constants/routes";
 import { authTranslation } from "@constants/auth/authTranslation";
 import { useAuthState } from "@features/auth/hooks";
 
-import anypliLogo from "../../../../assets/images/anypli-logo.png";
+import anypliLogo from "@assets/images/anypli-logo.png";
 
-import { sidebarStyles } from "./SidebarStyle";
+import { sidebarStyles } from "@layouts/DashboardLayout/components/Sidebar/SidebarStyle";
 
 const navigationIconMap = {
     [ROUTES.DASHBOARD]: <DashboardOutlinedIcon />,

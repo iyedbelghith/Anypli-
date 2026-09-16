@@ -1,5 +1,3 @@
-// src/constants/projects/projectsTranslation.ts
-
 import type { ProjectsTranslationType } from "@shared/types/projectsTranslation.types";
 
 export const projectsTranslation: ProjectsTranslationType = {
@@ -34,6 +32,7 @@ export const projectsTranslation: ProjectsTranslationType = {
     emptyState: {
         noProjects: "projects.emptyState.noProjects",
     },
+
     form: {
         title: "projects.form.title",
         client: "projects.form.client",
@@ -43,9 +42,11 @@ export const projectsTranslation: ProjectsTranslationType = {
         endDate: "projects.form.endDate",
         cancel: "projects.form.cancel",
         save: "projects.form.save",
+        update: "projects.form.update",
     },
 
     dialog: {
         addTitle: "projects.dialog.addTitle",
+        editTitle: "projects.dialog.editTitle",
     },
 };

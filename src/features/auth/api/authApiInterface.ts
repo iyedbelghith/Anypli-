@@ -20,8 +20,8 @@ export interface LoginPayload {
 
 export interface LoginData {
     user: User;
-    access_token: string;
-    refresh_token: string;
+    accessToken: string;
+    refreshToken: string;
 }
 
 export interface RegisterPayload {
@@ -35,14 +35,15 @@ export interface RegisterPayload {
 
 export interface RegisterData {
     user: User;
-    access_token: string;
-    refresh_token: string;
+    accessToken: string;
+    refreshToken?: string;
+    access_token?: string;
+    token_type?: string;
+    expires_in?: number;
 }
 
 export interface RefreshData {
-    access_token: string;
-    token_type: string;
-    expires_in: number;
+    accessToken: string;
 }
 
 export interface LogoutData {

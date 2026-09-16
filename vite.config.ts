@@ -20,7 +20,8 @@ export default defineConfig({
       "@pages": path.resolve(__dirname, "src/pages"),
       "@routes": path.resolve(__dirname, "src/routes"),
       "@i18n": path.resolve(__dirname, "src/i18n"),
-      "@locales": path.resolve(__dirname, "src/i18n/locales")
+      "@locales": path.resolve(__dirname, "src/i18n/locales"),
+      "@assets": path.resolve(__dirname, "src/assets"),
     }
   }
 

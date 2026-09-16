@@ -1,5 +1,3 @@
-// src/i18n/locales/fr/clients.ts
-
 import type { ClientsTranslationType } from "@shared/types/clientsTranslation.types";
 
 export const clients: ClientsTranslationType = {
@@ -32,6 +30,7 @@ export const clients: ClientsTranslationType = {
     emptyState: {
         noClients: "Aucun client trouvé.",
     },
+
     form: {
         name: "Nom du client",
         email: "Email",
@@ -40,9 +39,11 @@ export const clients: ClientsTranslationType = {
         status: "Statut",
         cancel: "Annuler",
         save: "Enregistrer",
+        update: "Modifier",
     },
 
     dialog: {
         addTitle: "Ajouter un client",
+        editTitle: "Modifier un client",
     },
 };

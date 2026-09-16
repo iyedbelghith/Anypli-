@@ -20,7 +20,7 @@ export const baseQuery = (baseUrl: string = API_CONFIG.BASE_URL) =>
             headers.set(HTTP_HEADERS.ACCEPT, CONTENT_TYPES.APPLICATION_JSON);
             headers.set(HTTP_HEADERS.CONTENT_TYPE, CONTENT_TYPES.APPLICATION_JSON);
 
-            if (accessToken) {
+            if (accessToken && accessToken !== "undefined" && accessToken !== "null") {
                 headers.set(
                     HTTP_HEADERS.AUTHORIZATION,
                     `${AUTH_SCHEMES.BEARER} ${accessToken}`

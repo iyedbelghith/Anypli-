@@ -3,6 +3,7 @@ import { useMemo, useState, type ChangeEvent } from "react";
 import {
     Box,
     Button,
+    CircularProgress,
     IconButton,
     InputAdornment,
     MenuItem,
@@ -25,23 +26,53 @@ import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined
 import { useTranslation } from "react-i18next";
 
 import DashboardLayout from "@layouts/DashboardLayout";
+import { USER_ROLES } from "@constants/roles";
 import { usersTranslation } from "@constants/users/usersTranslation";
 
-import { usersMockData } from "./UsersPageData";
+import {
+    useCreateUserMutation,
+    useDeleteUserMutation,
+    useGetUsersQuery,
+    useUpdateUserMutation,
+} from "@features/users/api/userApi";
+
+import { transformUsersToTableItems } from "@features/users/api/transformer";
+
+import type {
+    CreateUserPayload,
+    UpdateUserPayload,
+    UserTableItem,
+} from "@features/users/api/usersApiInterface";
+
 import { usersPageStyles } from "./UsersPageStyle";
 
 import AddUserDialog from "./components/AddUserDialog";
-import type { NewUserInput } from "./components/AddUserDialog/AddUserDialogInterface";
-
-import type { UserTableItem } from "./UsersPageInterface";
+import type { AddUserFormValues } from "./components/AddUserDialog/AddUserDialogInterface";
 
 export default function UsersPage() {
     const { t } = useTranslation();
 
-    const [users, setUsers] = useState<UserTableItem[]>(usersMockData);
+    const [selectedUser, setSelectedUser] = useState<UserTableItem | null>(null);
+    const [isAddDialogOpen, setIsAddDialogOpen] = useState<boolean>(false);
+    const [isEditDialogOpen, setIsEditDialogOpen] = useState<boolean>(false);
     const [searchValue, setSearchValue] = useState<string>("");
     const [selectedRole, setSelectedRole] = useState<string>("all");
-    const [isAddDialogOpen, setIsAddDialogOpen] = useState<boolean>(false);
+    const [currentPage, setCurrentPage] = useState<number>(1);
+
+    const { data, isLoading, isError, refetch } = useGetUsersQuery(currentPage);
+
+    const [createUser] = useCreateUserMutation();
+    const [updateUser] = useUpdateUserMutation();
+    const [deleteUser] = useDeleteUserMutation();
+
+    const users = useMemo(() => {
+        return transformUsersToTableItems(data?.data?.data ?? []);
+    }, [data]);
+
+    const pagination = data?.data;
+
+    const canGoPrevious = Boolean(pagination?.prev_page_url);
+    const canGoNext = Boolean(pagination?.next_page_url);
 
     const filteredUsers = useMemo(() => {
         return users.filter((user) => {
@@ -59,6 +90,15 @@ export default function UsersPage() {
         });
     }, [users, searchValue, selectedRole]);
 
+    const refreshUsersList = async () => {
+        if (currentPage === 1) {
+            await refetch();
+            return;
+        }
+
+        setCurrentPage(1);
+    };
+
     const handleSearchChange = (event: ChangeEvent<HTMLInputElement>) => {
         setSearchValue(event.target.value);
     };
@@ -75,11 +115,53 @@ export default function UsersPage() {
         setIsAddDialogOpen(false);
     };
 
-    const handleAddUser = (newUser: NewUserInput) => {
-        const nextId = Math.max(0, ...users.map((user) => user.id)) + 1;
-        const createdAt = new Date().toISOString().slice(0, 10);
+    const handleOpenEditDialog = (user: UserTableItem) => {
+        setSelectedUser(user);
+        setIsEditDialogOpen(true);
+    };
 
-        setUsers([...users, { id: nextId, createdAt, ...newUser }]);
+    const handleCloseEditDialog = () => {
+        setSelectedUser(null);
+        setIsEditDialogOpen(false);
+    };
+
+    const handleAddUser = async (values: AddUserFormValues) => {
+        const payload: CreateUserPayload = {
+            name: values.name,
+            prenom: values.prenom,
+            email: values.email,
+            password: values.password,
+            telephone: values.telephone,
+            role: values.role,
+        };
+
+        await createUser(payload).unwrap();
+        handleCloseAddDialog();
+        await refreshUsersList();
+    };
+
+    const handleUpdateUser = async (values: AddUserFormValues) => {
+        if (!selectedUser) {
+            return;
+        }
+
+        const payload: UpdateUserPayload = {
+            id: selectedUser.id,
+            name: values.name,
+            prenom: values.prenom,
+            email: values.email,
+            telephone: values.telephone,
+            role: values.role,
+        };
+
+        await updateUser(payload).unwrap();
+        handleCloseEditDialog();
+        await refetch();
+    };
+
+    const handleDeleteUser = async (userId: number) => {
+        await deleteUser(userId).unwrap();
+        await refetch();
     };
 
     const getRoleLabel = (role: UserTableItem["role"]) => {
@@ -113,36 +195,6 @@ export default function UsersPage() {
                 </Button>
             </Box>
 
-            <AddUserDialog
-                open={isAddDialogOpen}
-                onClose={handleCloseAddDialog}
-                onSubmit={handleAddUser}
-                labels={{
-                    title: t(usersTranslation.dialog.title),
-                    fields: {
-                        name: t(usersTranslation.dialog.fields.name),
-                        prenom: t(usersTranslation.dialog.fields.prenom),
-                        email: t(usersTranslation.dialog.fields.email),
-                        telephone: t(usersTranslation.dialog.fields.telephone),
-                        role: t(usersTranslation.dialog.fields.role),
-                        status: t(usersTranslation.dialog.fields.status),
-                    },
-                    roles: {
-                        admin: t(usersTranslation.roles.admin),
-                        employe: t(usersTranslation.roles.employe),
-                        client: t(usersTranslation.roles.client),
-                    },
-                    status: {
-                        active: t(usersTranslation.status.active),
-                        inactive: t(usersTranslation.status.inactive),
-                    },
-                    actions: {
-                        cancel: t(usersTranslation.dialog.actions.cancel),
-                        submit: t(usersTranslation.dialog.actions.submit),
-                    },
-                }}
-            />
-
             <Paper sx={usersPageStyles.card}>
                 <Box sx={usersPageStyles.filters}>
                     <TextField
@@ -171,100 +223,180 @@ export default function UsersPage() {
                             {t(usersTranslation.filters.allRoles)}
                         </MenuItem>
 
-                        <MenuItem value="admin">
+                        <MenuItem value={USER_ROLES.ADMIN}>
                             {t(usersTranslation.roles.admin)}
                         </MenuItem>
 
-                        <MenuItem value="employe">
+                        <MenuItem value={USER_ROLES.EMPLOYEE}>
                             {t(usersTranslation.roles.employe)}
                         </MenuItem>
 
-                        <MenuItem value="client">
+                        <MenuItem value={USER_ROLES.CLIENT}>
                             {t(usersTranslation.roles.client)}
                         </MenuItem>
                     </TextField>
                 </Box>
 
-                <TableContainer>
-                    <Table>
-                        <TableHead sx={usersPageStyles.tableHead}>
-                            <TableRow>
-                                <TableCell>{t(usersTranslation.table.user)}</TableCell>
-                                <TableCell>{t(usersTranslation.table.email)}</TableCell>
-                                <TableCell>{t(usersTranslation.table.phone)}</TableCell>
-                                <TableCell>{t(usersTranslation.table.role)}</TableCell>
-                                <TableCell>{t(usersTranslation.table.status)}</TableCell>
-                                <TableCell>{t(usersTranslation.table.createdAt)}</TableCell>
-                                <TableCell align="right">
-                                    {t(usersTranslation.table.actions)}
-                                </TableCell>
-                            </TableRow>
-                        </TableHead>
+                {isLoading && (
+                    <Box sx={usersPageStyles.emptyState}>
+                        <CircularProgress size={28} />
+                    </Box>
+                )}
 
-                        <TableBody>
-                            {filteredUsers.map((user) => (
-                                <TableRow key={user.id} hover sx={usersPageStyles.tableRow}>
-                                    <TableCell>
-                                        <Typography sx={usersPageStyles.userName}>
-                                            {user.prenom} {user.name}
-                                        </Typography>
-                                    </TableCell>
+                {isError && (
+                    <Box sx={usersPageStyles.emptyState}>
+                        <Typography color="error">
+                            Impossible de charger les utilisateurs.
+                        </Typography>
+                    </Box>
+                )}
 
-                                    <TableCell>
-                                        <Typography variant="body2" sx={usersPageStyles.userEmail}>
-                                            {user.email}
-                                        </Typography>
-                                    </TableCell>
+                {!isLoading && !isError && (
+                    <>
+                        <TableContainer>
+                            <Table>
+                                <TableHead sx={usersPageStyles.tableHead}>
+                                    <TableRow>
+                                        <TableCell>{t(usersTranslation.table.user)}</TableCell>
+                                        <TableCell>{t(usersTranslation.table.email)}</TableCell>
+                                        <TableCell>{t(usersTranslation.table.phone)}</TableCell>
+                                        <TableCell>{t(usersTranslation.table.role)}</TableCell>
+                                        <TableCell>{t(usersTranslation.table.status)}</TableCell>
+                                        <TableCell>{t(usersTranslation.table.createdAt)}</TableCell>
+                                        <TableCell align="right">
+                                            {t(usersTranslation.table.actions)}
+                                        </TableCell>
+                                    </TableRow>
+                                </TableHead>
 
-                                    <TableCell>{user.telephone}</TableCell>
+                                <TableBody>
+                                    {filteredUsers.map((user) => (
+                                        <TableRow key={user.id} hover sx={usersPageStyles.tableRow}>
+                                            <TableCell>
+                                                <Typography sx={usersPageStyles.userName}>
+                                                    {user.prenom} {user.name}
+                                                </Typography>
+                                            </TableCell>
 
-                                    <TableCell>
-                                        <Box sx={usersPageStyles.roleBadge}>
-                                            {getRoleLabel(user.role)}
-                                        </Box>
-                                    </TableCell>
+                                            <TableCell>
+                                                <Typography variant="body2" sx={usersPageStyles.userEmail}>
+                                                    {user.email}
+                                                </Typography>
+                                            </TableCell>
 
-                                    <TableCell>
-                                        <Box
-                                            sx={
-                                                user.status === "active"
-                                                    ? usersPageStyles.activeStatus
-                                                    : usersPageStyles.inactiveStatus
-                                            }
-                                        >
-                                            {getStatusLabel(user.status)}
-                                        </Box>
-                                    </TableCell>
+                                            <TableCell>{user.telephone}</TableCell>
 
-                                    <TableCell>{user.createdAt}</TableCell>
+                                            <TableCell>
+                                                <Box sx={usersPageStyles.roleBadge}>
+                                                    {getRoleLabel(user.role)}
+                                                </Box>
+                                            </TableCell>
 
-                                    <TableCell align="right">
-                                        <Box sx={usersPageStyles.actions}>
-                                            <IconButton size="small" sx={usersPageStyles.editButton}>
-                                                <EditOutlinedIcon fontSize="small" />
-                                            </IconButton>
+                                            <TableCell>
+                                                <Box
+                                                    sx={
+                                                        user.status === "active"
+                                                            ? usersPageStyles.activeStatus
+                                                            : usersPageStyles.inactiveStatus
+                                                    }
+                                                >
+                                                    {getStatusLabel(user.status)}
+                                                </Box>
+                                            </TableCell>
 
-                                            <IconButton size="small" sx={usersPageStyles.deleteButton}>
-                                                <DeleteOutlineOutlinedIcon fontSize="small" />
-                                            </IconButton>
-                                        </Box>
-                                    </TableCell>
-                                </TableRow>
-                            ))}
+                                            <TableCell>{user.createdAt}</TableCell>
 
-                            {filteredUsers.length === 0 && (
-                                <TableRow>
-                                    <TableCell colSpan={7}>
-                                        <Box sx={usersPageStyles.emptyState}>
-                                            <Typography>Aucun utilisateur trouvé.</Typography>
-                                        </Box>
-                                    </TableCell>
-                                </TableRow>
-                            )}
-                        </TableBody>
-                    </Table>
-                </TableContainer>
+                                            <TableCell align="right">
+                                                <Box sx={usersPageStyles.actions}>
+                                                    <IconButton
+                                                        size="small"
+                                                        sx={usersPageStyles.editButton}
+                                                        onClick={() => handleOpenEditDialog(user)}
+                                                    >
+                                                        <EditOutlinedIcon fontSize="small" />
+                                                    </IconButton>
+
+                                                    <IconButton
+                                                        size="small"
+                                                        sx={usersPageStyles.deleteButton}
+                                                        onClick={() => handleDeleteUser(user.id)}
+                                                    >
+                                                        <DeleteOutlineOutlinedIcon fontSize="small" />
+                                                    </IconButton>
+                                                </Box>
+                                            </TableCell>
+                                        </TableRow>
+                                    ))}
+
+                                    {filteredUsers.length === 0 && (
+                                        <TableRow>
+                                            <TableCell colSpan={7}>
+                                                <Box sx={usersPageStyles.emptyState}>
+                                                    <Typography>
+                                                        {t(usersTranslation.emptyState.noUsers)}
+                                                    </Typography>
+                                                </Box>
+                                            </TableCell>
+                                        </TableRow>
+                                    )}
+                                </TableBody>
+                            </Table>
+                        </TableContainer>
+
+                        <Box sx={usersPageStyles.pagination}>
+                            <Button
+                                variant="outlined"
+                                disabled={!canGoPrevious}
+                                onClick={() => setCurrentPage((page) => page - 1)}
+                            >
+                                Précédent
+                            </Button>
+
+                            <Typography>
+                                Page {pagination?.current_page ?? 1} /{" "}
+                                {pagination?.last_page ?? 1}
+                            </Typography>
+
+                            <Button
+                                variant="outlined"
+                                disabled={!canGoNext}
+                                onClick={() => setCurrentPage((page) => page + 1)}
+                            >
+                                Suivant
+                            </Button>
+                        </Box>
+                    </>
+                )}
             </Paper>
+
+            <AddUserDialog
+                open={isAddDialogOpen}
+                title={t(usersTranslation.dialog.addTitle)}
+                submitLabel={t(usersTranslation.form.save)}
+                onClose={handleCloseAddDialog}
+                onSubmit={handleAddUser}
+            />
+
+            <AddUserDialog
+                open={isEditDialogOpen}
+                title={t(usersTranslation.dialog.editTitle)}
+                submitLabel={t(usersTranslation.form.update)}
+                initialValues={
+                    selectedUser
+                        ? {
+                            name: selectedUser.name,
+                            prenom: selectedUser.prenom,
+                            email: selectedUser.email,
+                        
+                            telephone: selectedUser.telephone,
+                            role: selectedUser.role,
+                            status: selectedUser.status,
+                        }
+                        : undefined
+                }
+                onClose={handleCloseEditDialog}
+                onSubmit={handleUpdateUser}
+            />
         </DashboardLayout>
     );
 }

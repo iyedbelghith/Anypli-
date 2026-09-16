@@ -53,6 +53,9 @@
       ],
       "@locales": [
         "src/i18n/locales/*"
+      ],
+      "@assets/*": [
+        "src/assets/*"
       ]
     }
   },

@@ -21,8 +21,6 @@ import AddProjectDialog, {
     type AddProjectFormValues,
 } from "./components/AddProjectDialog";
 
-
-
 import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
@@ -46,10 +44,19 @@ export default function ProjectsPage() {
 
     const [projects, setProjects] =
         useState<ProjectTableItem[]>(projectsMockData);
+    const [selectedProject, setSelectedProject] =
+        useState<ProjectTableItem | null>(null);
 
     const [searchValue, setSearchValue] = useState<string>("");
     const [selectedStatus, setSelectedStatus] = useState<string>("all");
     const [isAddDialogOpen, setIsAddDialogOpen] = useState<boolean>(false);
+    const [isEditDialogOpen, setIsEditDialogOpen] = useState<boolean>(false);
+
+    const handleDeleteProject = (projectId: number) => {
+        setProjects((currentProjects) =>
+            currentProjects.filter((project) => project.id !== projectId),
+        );
+    };
 
     const filteredProjects = useMemo(() => {
         return projects.filter((project) => {
@@ -66,6 +73,7 @@ export default function ProjectsPage() {
             return matchesSearch && matchesStatus;
         });
     }, [projects, searchValue, selectedStatus]);
+
     const handleSearchChange = (event: ChangeEvent<HTMLInputElement>) => {
         setSearchValue(event.target.value);
     };
@@ -86,6 +94,16 @@ export default function ProjectsPage() {
         setIsAddDialogOpen(false);
     };
 
+    const handleOpenEditDialog = (project: ProjectTableItem) => {
+        setSelectedProject(project);
+        setIsEditDialogOpen(true);
+    };
+
+    const handleCloseEditDialog = () => {
+        setSelectedProject(null);
+        setIsEditDialogOpen(false);
+    };
+
     const handleAddProject = (values: AddProjectFormValues) => {
         const newProject: ProjectTableItem = {
             id: Date.now(),
@@ -98,6 +116,25 @@ export default function ProjectsPage() {
         };
 
         setProjects((currentProjects) => [newProject, ...currentProjects]);
+    };
+
+    const handleUpdateProject = (values: AddProjectFormValues) => {
+        if (!selectedProject) {
+            return;
+        }
+
+        setProjects((currentProjects) =>
+            currentProjects.map((project) =>
+                project.id === selectedProject.id
+                    ? {
+                          ...project,
+                          ...values,
+                      }
+                    : project,
+            ),
+        );
+
+        handleCloseEditDialog();
     };
 
     const getStatusStyle = (status: ProjectStatus) => {
@@ -181,7 +218,9 @@ export default function ProjectsPage() {
                                 <TableCell>{t(projectsTranslation.table.status)}</TableCell>
                                 <TableCell>{t(projectsTranslation.table.startDate)}</TableCell>
                                 <TableCell>{t(projectsTranslation.table.endDate)}</TableCell>
-                                <TableCell align="right">Actions</TableCell>
+                                <TableCell align="right">
+                                    {t(projectsTranslation.table.actions)}
+                                </TableCell>
                             </TableRow>
                         </TableHead>
 
@@ -229,6 +268,7 @@ export default function ProjectsPage() {
                                             <IconButton
                                                 size="small"
                                                 sx={projectsPageStyles.editButton}
+                                                onClick={() => handleOpenEditDialog(project)}
                                             >
                                                 <EditOutlinedIcon fontSize="small" />
                                             </IconButton>
@@ -236,6 +276,7 @@ export default function ProjectsPage() {
                                             <IconButton
                                                 size="small"
                                                 sx={projectsPageStyles.deleteButton}
+                                                onClick={() => handleDeleteProject(project.id)}
                                             >
                                                 <DeleteOutlineOutlinedIcon fontSize="small" />
                                             </IconButton>
@@ -248,7 +289,9 @@ export default function ProjectsPage() {
                                 <TableRow>
                                     <TableCell colSpan={7}>
                                         <Box sx={projectsPageStyles.emptyState}>
-                                            <Typography>{t(projectsTranslation.emptyState.noProjects)}</Typography>
+                                            <Typography>
+                                                {t(projectsTranslation.emptyState.noProjects)}
+                                            </Typography>
                                         </Box>
                                     </TableCell>
                                 </TableRow>
@@ -257,10 +300,33 @@ export default function ProjectsPage() {
                     </Table>
                 </TableContainer>
             </Paper>
+
             <AddProjectDialog
                 open={isAddDialogOpen}
+                title={t(projectsTranslation.dialog.addTitle)}
+                submitLabel={t(projectsTranslation.form.save)}
                 onClose={handleCloseAddDialog}
                 onSubmit={handleAddProject}
+            />
+
+            <AddProjectDialog
+                open={isEditDialogOpen}
+                title={t(projectsTranslation.dialog.editTitle)}
+                submitLabel={t(projectsTranslation.form.update)}
+                initialValues={
+                    selectedProject
+                        ? {
+                              title: selectedProject.title,
+                              client: selectedProject.client,
+                              manager: selectedProject.manager,
+                              status: selectedProject.status,
+                              startDate: selectedProject.startDate,
+                              endDate: selectedProject.endDate,
+                          }
+                        : undefined
+                }
+                onClose={handleCloseEditDialog}
+                onSubmit={handleUpdateProject}
             />
         </DashboardLayout>
     );

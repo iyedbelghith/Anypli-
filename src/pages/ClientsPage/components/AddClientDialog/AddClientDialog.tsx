@@ -1,4 +1,4 @@
-import { useState, type ChangeEvent, type FormEvent } from "react";
+import { useEffect, useState, type ChangeEvent, type FormEvent } from "react";
 
 import {
     Box,
@@ -23,7 +23,7 @@ import type {
 
 import { addClientDialogStyles } from "./AddClientDialogStyle";
 
-const initialFormValues: AddClientFormValues = {
+const EMPTY_FORM: AddClientFormValues = {
     name: "",
     email: "",
     telephone: "",
@@ -33,13 +33,25 @@ const initialFormValues: AddClientFormValues = {
 
 export default function AddClientDialog({
     open,
+    title,
+    submitLabel,
+    initialValues,
     onClose,
     onSubmit,
 }: AddClientDialogProps) {
     const { t } = useTranslation();
 
-    const [formValues, setFormValues] =
-        useState<AddClientFormValues>(initialFormValues);
+    const [formValues, setFormValues] = useState<AddClientFormValues>(EMPTY_FORM);
+
+    useEffect(() => {
+        if (!open) {
+            return;
+        }
+
+        setFormValues(initialValues ?? EMPTY_FORM);
+        // Sync form only when the dialog opens
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [open]);
 
     const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
         const fieldName = event.target.name as AddClientFormField;
@@ -50,12 +62,8 @@ export default function AddClientDialog({
         });
     };
 
-    const resetForm = () => {
-        setFormValues(initialFormValues);
-    };
-
     const handleClose = () => {
-        resetForm();
+        setFormValues(EMPTY_FORM);
         onClose();
     };
 
@@ -70,7 +78,7 @@ export default function AddClientDialog({
             status: formValues.status,
         });
 
-        resetForm();
+        setFormValues(EMPTY_FORM);
         onClose();
     };
 
@@ -81,7 +89,7 @@ export default function AddClientDialog({
                 onSubmit={handleSubmit}
                 sx={addClientDialogStyles.form}
             >
-                <DialogTitle>{t(clientsTranslation.dialog.addTitle)}</DialogTitle>
+                <DialogTitle>{title}</DialogTitle>
 
                 <DialogContent sx={addClientDialogStyles.content}>
                     <TextField
@@ -153,7 +161,7 @@ export default function AddClientDialog({
                         variant="contained"
                         sx={addClientDialogStyles.submitButton}
                     >
-                        {t(clientsTranslation.form.save)}
+                        {submitLabel}
                     </Button>
                 </DialogActions>
             </Box>

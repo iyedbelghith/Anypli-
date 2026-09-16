@@ -12,6 +12,9 @@ export type AddClientFormField = keyof AddClientFormValues;
 
 export interface AddClientDialogProps {
     open: boolean;
+    title: string;
+    submitLabel: string;
+    initialValues?: AddClientFormValues;
     onClose: () => void;
     onSubmit: (values: AddClientFormValues) => void;
 }

@@ -1,35 +1,21 @@
-import type { UserTableItem } from "../../UsersPageInterface";
+import type { UserRole } from "@features/auth/types/authTypes";
+import type { UserStatus } from "@features/users/api/usersApiInterface";
 
-export type NewUserInput = Omit<UserTableItem, "id" | "createdAt">;
-
-export interface AddUserDialogLabels {
-    title: string;
-    fields: {
-        name: string;
-        prenom: string;
-        email: string;
-        telephone: string;
-        role: string;
-        status: string;
-    };
-    roles: {
-        admin: string;
-        employe: string;
-        client: string;
-    };
-    status: {
-        active: string;
-        inactive: string;
-    };
-    actions: {
-        cancel: string;
-        submit: string;
-    };
+export interface AddUserFormValues {
+    name: string;
+    prenom: string;
+    email: string;
+    password: string;
+    telephone: string;
+    role: UserRole;
+    status: UserStatus;
 }
 
 export interface AddUserDialogProps {
     open: boolean;
-    labels: AddUserDialogLabels;
+    title: string;
+    submitLabel: string;
+    initialValues?: Omit<AddUserFormValues, "password">;
     onClose: () => void;
-    onSubmit: (user: NewUserInput) => void;
+    onSubmit: (values: AddUserFormValues) => void;
 }
